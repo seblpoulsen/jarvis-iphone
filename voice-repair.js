@@ -1,356 +1,51 @@
 (() => {
   'use strict';
-  // Runs after the existing inline app script. It only owns voice controls while
-  // hands-free/push-to-talk is active; the chat UI and AI Worker remain untouched.
-  const WORKER_URL = 'https://jarvis-ai.seblpoulsen.workers.dev/';
+  // Replaces only the existing hands-free/push-to-talk event ownership. AI chat,
+  // endpoint, markup, colors, and HUD remain in index.html unchanged.
   const $ = id => document.getElementById(id);
-  const recCtor = window.SpeechRecognition || window.webkitSpeechRecognition;
-  const el = {
-    handsfree: $('handsfree-button'), mic: $('mic-button'), stop: $('stop-listening-button'),
-    state: $('listen-state'), stateText: $('listen-state-text'), log: $('chatlog'),
-    form: $('composer'), input: $('msg'), voice: $('voice-enabled'), mute: $('mute-button'),
-    continuous: $('continuous-enabled'), interrupt: $('barge-in-enabled'),
-    silence: $('silence-timeout'), voiceStatus: $('voice-status-label'),
-    notice: $('notice'), reactor: $('reactor')
-  };
-  if (!el.handsfree || !el.form || !el.log) return;
-
-  const s = {
-    recognition: null, active: false, phase: 'idle', running: false, starting: false,
-    stopping: false, nextPhase: null, restarts: 0, restartTimer: 0, silenceTimer: 0,
-    responseTimer: 0, commandText: '', lastSent: '', lastSentAt: 0,
-    pendingWake: false, speaking: false, muted: false, manualPush: false,
-    sessionBeforePush: false, observer: null, speechRun: 0
-  };
-  const labels = {
-    idle: 'IDLE · MICROPHONE OFF', starting: 'STARTING MICROPHONE',
-    wake: 'LISTENING FOR JARVIS', activated: 'JARVIS ACTIVATED',
-    command: 'LISTENING TO COMMAND', thinking: 'THINKING',
-    speaking: 'SPEAKING', resuming: 'RESUMING LISTENING',
-    error: 'MICROPHONE ERROR', unsupported: 'SPEECH RECOGNITION UNAVAILABLE'
-  };
-
-  function notify(message) {
-    if (!el.notice) { window.alert(message); return; }
-    el.notice.textContent = message;
-    el.notice.classList.add('show');
-    clearTimeout(s.noticeTimer);
-    s.noticeTimer = setTimeout(() => el.notice.classList.remove('show'), 4200);
+  const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const el = { handsfree:$('handsfree-button'), mic:$('mic-button'), stop:$('stop-listening-button'), state:$('listen-state'), stateText:$('listen-state-text'), log:$('chatlog'), form:$('composer'), input:$('msg'), voice:$('voice-enabled'), mute:$('mute-button'), continuous:$('continuous-enabled'), silence:$('silence-timeout'), interrupt:$('barge-in-enabled'), voiceStatus:$('voice-status-label'), notice:$('notice'), reactor:$('reactor'), voiceSelect:$('voice-select') };
+  if (!el.handsfree || !el.form || !el.log || !el.state || !window.JarvisVoice) return;
+  const voice = window.JarvisVoice;
+  const state = { rec:null, active:false, push:false, running:false, starting:false, phase:'idle', requested:'wake', transition:null, command:'', pendingText:'', restart:0, silence:0, watchdog:0, replyTimeout:0, noticeTimeout:0, restarts:0, lastCommand:'', lastAt:0, speaking:false, muted:false, voiceRequest:false, originalVoiceEnabled:null, recognitionContext:'', pageGone:false };
+  const labels = { idle:'IDLE · MICROPHONE OFF',starting:'STARTING MICROPHONE',wake:'WAITING FOR JARVIS',command:'LISTENING TO COMMAND',thinking:'THINKING',speaking:'SPEAKING',resuming:'RESUMING LISTENING',error:'MICROPHONE ERROR',unsupported:'SPEECH RECOGNITION UNAVAILABLE' };
+  function notify(message) { if(!el.notice)return;el.notice.textContent=message;el.notice.classList.add('show');clearTimeout(state.noticeTimeout);state.noticeTimeout=setTimeout(()=>el.notice.classList.remove('show'),4500); }
+  function setStatus(phase) { state.phase=phase;el.state.dataset.state=phase;el.stateText.textContent=labels[phase]||phase.toUpperCase();el.handsfree.classList.toggle('active',state.active);el.handsfree.setAttribute('aria-label',state.active?'Turn hands-free mode off':'Start hands-free mode');el.handsfree.title=state.active?'Hands-free is on — turn off':'Start hands-free mode';if(el.stop)el.stop.hidden=!state.active&&!state.push;if(el.voiceStatus)el.voiceStatus.textContent=phase==='error'?'MICROPHONE ERROR':state.running?'MICROPHONE ACTIVE':state.starting?'MICROPHONE STARTING':'READY'; }
+  function normalize(text) { return String(text).toLowerCase().replace(/\b(?:jarv(?:is|us|iss|iz)|jervis|jarvies|jar vis|jarv is)\b/g,'jarvis').replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim(); }
+  function wakeTail(text) { const n=normalize(text),match=n.match(/\b(?:hey\s+)?jarvis\b/);return match?n.slice(match.index+match[0].length).trim().replace(/^please\s*/,''):null; }
+  function isStop(text) { return /\b(?:jarvis\s+)?(?:stop|turn off|disable|cancel)\s+(?:the\s+)?(?:hands[- ]?free|listening|microphone|voice mode)\b/i.test(text)||/^stop listening$/i.test(text.trim()); }
+  function stopRecognition(transition=null) { clearTimeout(state.silence);if(transition)state.transition=transition;if(state.rec&&(state.running||state.starting)){try{state.rec.stop();}catch(_){state.running=false;state.starting=false;}} }
+  function fail(message) { state.active=false;state.push=false;state.transition=null;clearTimeout(state.restart);clearTimeout(state.silence);clearTimeout(state.watchdog);stopRecognition();setStatus('error');notify(message); }
+  function start(phase) { if((!state.active&&!state.push)||!state.rec||document.hidden)return;clearTimeout(state.restart);if(state.running||state.starting)return;state.requested=phase;state.transition=null;state.command='';state.starting=true;setStatus('starting');try{state.rec.start();state.watchdog=setTimeout(()=>{if(state.starting&&!state.running)fail('The browser did not start microphone recognition. Check microphone permissions and try again.');},8000);}catch(error){state.starting=false;if(error.name==='InvalidStateError'){state.restart=setTimeout(()=>start(phase),350);return;}fail(error.name==='NotAllowedError'?'Microphone permission denied. Allow microphone access for this site, then try Hands-Free again.':'Could not start microphone. Check its connection and browser permission.');} }
+  function ackAndListen(tail) { state.phase='speaking';el.reactor?.classList.add('activated');const bubble=document.createElement('div');bubble.className='bubble assistant';const who=document.createElement('div');who.className='who';who.textContent='J.A.R.V.I.S.';const content=document.createElement('div');content.textContent='Yes, sir?';bubble.append(who,content);el.log.appendChild(bubble);el.log.scrollTop=el.log.scrollHeight;setStatus('speaking');
+    voice.speak('Yes, sir?',{onState:mode=>{if(mode==='error')setStatus('error');}}).catch(error=>notify(error.message)).finally(()=>{el.reactor?.classList.remove('activated');if(!state.active)return;if(tail)sendVoiceCommand(tail);else start('command');});
   }
-  function status(phase) {
-    s.phase = phase;
-    el.state.dataset.state = phase;
-    el.stateText.textContent = labels[phase] || phase.toUpperCase();
-    el.handsfree.classList.toggle('active', s.active);
-    el.handsfree.setAttribute('aria-label', s.active ? 'Turn hands-free mode off' : 'Start hands-free mode');
-    el.handsfree.title = s.active ? 'Hands-free is on — turn off' : 'Start hands-free mode';
-    el.stop.hidden = !s.active && !s.manualPush;
-    if (el.voiceStatus) {
-      el.voiceStatus.textContent = phase === 'error' ? 'MICROPHONE ERROR' : s.running ? 'MICROPHONE ACTIVE' : s.active ? 'MICROPHONE STARTING' : 'READY';
-    }
+  function sendVoiceCommand(text) { const command=String(text||'').trim();if(!command){start('command');return;}if(isStop(command)){stopAll();notify('Hands-free listening is off.');return;}const now=Date.now(),key=command.toLowerCase();if(key===state.lastCommand&&now-state.lastAt<2800)return;state.lastCommand=key;state.lastAt=now;state.command='';setStatus('thinking');el.input.value=command;state.voiceRequest=true;el.form.requestSubmit(); }
+  function recognitionResult(event) { if((!state.active&&!state.push)||state.phase==='thinking'||state.phase==='speaking')return;let transcript='';for(let i=0;i<event.results.length;i++){const result=event.results[i];if(result?.[0]?.transcript)transcript+=` ${result[0].transcript}`;}transcript=transcript.trim();if(!transcript)return;
+    if(state.phase==='wake'){const tail=wakeTail(transcript);if(tail===null)return;stopRecognition({type:'wake',tail});return;}
+    if(state.phase!=='command')return;state.command=transcript;clearTimeout(state.silence);state.silence=setTimeout(()=>{if(state.phase==='command'&&state.command.trim())stopRecognition({type:'command',text:state.command.trim()});},Math.max(800,Number(el.silence?.value||1200))); }
+  function startHandsFree() { if(!state.rec){notify('Speech recognition is not supported in this browser. You can still use text chat.');return;}if(location.protocol!=='https:'&&location.hostname!=='localhost'){notify('Microphone access requires HTTPS.');return;}state.active=true;state.push=false;state.restarts=0;try{const u=new SpeechSynthesisUtterance(' ');u.volume=0;window.speechSynthesis?.speak(u);}catch(_){}start(el.continuous?.checked?'command':'wake'); }
+  function stopAll() { state.active=false;state.push=false;state.command='';state.pendingText='';state.transition=null;clearTimeout(state.restart);clearTimeout(state.silence);clearTimeout(state.watchdog);clearTimeout(state.replyTimeout);voice.stop();el.reactor?.classList.remove('activated');stopRecognition();setStatus('idle'); }
+  function pushToTalk() { if(!state.rec){notify('Speech recognition is unavailable. Use text chat instead.');return;}state.active=false;state.push=true;start('command'); }
+  function responseReady(node) { if(!(node instanceof Element)||!node.matches('.bubble.assistant')||node.dataset.voiceHandled||node.classList.contains('wake-acknowledgement')||node.querySelector('.typing'))return;const text=node.lastElementChild?.textContent?.trim();if(!text)return;node.dataset.voiceHandled='1';clearTimeout(state.replyTimeout);if(state.originalVoiceEnabled!==null){el.voice.checked=state.originalVoiceEnabled;state.originalVoiceEnabled=null;}
+    if(!state.active&&!state.push)return;
+    const done=()=>{if(state.push){state.push=false;setStatus('idle');return;}if(state.active){setStatus('resuming');state.restart=setTimeout(()=>start(el.continuous?.checked?'command':'wake'),350);}};
+    if(node.classList.contains('error')||state.muted||!el.voice?.checked){done();return;}setStatus('speaking');state.speaking=true;voice.speak(text,{onState:m=>{if(m==='error')setStatus('error');}}).catch(error=>notify(`Speech output failed: ${error.message}`)).finally(()=>{state.speaking=false;done();}); }
+  function init() { if(!Recognition){el.handsfree.disabled=true;el.mic.disabled=true;el.state.dataset.state='unsupported';el.stateText.textContent=labels.unsupported;if(el.voiceStatus)el.voiceStatus.textContent='NOT SUPPORTED';return;}state.rec=new Recognition();state.rec.lang='en-GB';state.rec.continuous=true;state.rec.interimResults=true;state.rec.maxAlternatives=3;
+    state.rec.onstart=()=>{clearTimeout(state.watchdog);state.starting=false;state.running=true;state.restarts=0;state.phase=state.requested;setStatus(state.phase);};state.rec.onresult=recognitionResult;
+    state.rec.onerror=event=>{state.starting=false;if(['aborted','no-speech'].includes(event.error))return;if(['not-allowed','service-not-allowed'].includes(event.error)){fail('Microphone permission denied. Allow access in browser/site settings and start Hands-Free again.');return;}if(event.error==='audio-capture'){fail('No microphone device is available. Connect or enable a microphone.');return;}if(event.error==='network')notify('Speech recognition network error. Check the connection; JARVIS will retry while the page is visible.');else notify(`Speech recognition error: ${event.error}.`);};
+    state.rec.onend=()=>{clearTimeout(state.watchdog);state.running=false;state.starting=false;if(!state.active&&!state.push){setStatus('idle');return;}if(state.transition){const t=state.transition;state.transition=null;if(t.type==='wake'){ackAndListen(t.tail);return;}if(t.type==='command'){sendVoiceCommand(t.text);return;}}if(state.phase==='thinking'||state.phase==='speaking')return;if(state.push){state.push=false;setStatus('idle');return;}if(state.active&&!document.hidden){setStatus('resuming');const wait=Math.min(3000,350*2**Math.min(state.restarts++,3));state.restart=setTimeout(()=>start(el.continuous?.checked?'command':'wake'),wait);}};
   }
-  function wakeTail(text) {
-    const normalized = String(text).toLowerCase()
-      .replace(/\b(?:jarv(?:is|us|iss|iz)|jervis|jarvies)\b/g, 'jarvis')
-      .replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
-    const match = normalized.match(/\b(?:hey\s+)?jarvis\b/);
-    return match ? normalized.slice(match.index + match[0].length).trim().replace(/^please\s*/, '') : null;
-  }
-  function stopPhrase(text) {
-    return /\b(?:jarvis\s+)?(?:stop|turn off|disable|cancel)\s+(?:the\s+)?(?:hands[- ]?free|listening|microphone|voice mode)\b/i.test(text) || /^stop listening$/i.test(text.trim());
-  }
-  function sound() {
-    try {
-      const Audio = window.AudioContext || window.webkitAudioContext;
-      if (!Audio) return;
-      const context = new Audio(), oscillator = context.createOscillator(), gain = context.createGain();
-      oscillator.frequency.value = 740;
-      gain.gain.setValueAtTime(.02, context.currentTime);
-      gain.gain.exponentialRampToValueAtTime(.001, context.currentTime + .12);
-      oscillator.connect(gain); gain.connect(context.destination);
-      oscillator.start(); oscillator.stop(context.currentTime + .12);
-      oscillator.onended = () => context.close();
-    } catch (_) { /* Visual activation remains available if audio is blocked. */ }
-  }
-  function browserVoice() {
-    const voices = window.speechSynthesis?.getVoices?.() || [];
-    return voices.filter(v => /^en[-_]gb/i.test(v.lang)).sort((a, b) => {
-      const score = v => (/natural|neural|enhanced|premium/i.test(v.name) ? 2 : 0) + (/daniel|ryan|male/i.test(v.name.toLowerCase()) ? 1 : 0);
-      return score(b) - score(a);
-    })[0] || voices.find(v => /^en/i.test(v.lang)) || null;
-  }
-  function speak(text, complete) {
-    const synth = window.speechSynthesis;
-    if (!synth || !window.SpeechSynthesisUtterance || s.muted || (el.voice && !el.voice.checked)) {
-      complete?.(); return;
-    }
-    const run = ++s.speechRun;
-    synth.cancel();
-    const parts = String(text).match(/[^.!?]+[.!?]*/g) || [String(text)];
-    let index = 0;
-    const next = () => {
-      if (run !== s.speechRun) return;
-      if (index >= parts.length) { s.speaking = false; complete?.(); return; }
-      const utterance = new SpeechSynthesisUtterance(parts[index++].trim());
-      const voice = browserVoice();
-      if (voice) { utterance.voice = voice; utterance.lang = voice.lang; }
-      else utterance.lang = 'en-GB';
-      utterance.rate = .92; utterance.pitch = .9; utterance.volume = 1;
-      utterance.onend = () => setTimeout(next, 130);
-      utterance.onerror = event => {
-        if (run !== s.speechRun) return;
-        s.speaking = false;
-        if (event.error !== 'canceled' && event.error !== 'interrupted') complete?.();
-      };
-      try { s.speaking = true; synth.speak(utterance); }
-      catch (_) { s.speaking = false; complete?.(); }
-    };
-    next();
-  }
-  function stopSpeaking() {
-    s.speechRun++;
-    s.speaking = false;
-    if (window.speechSynthesis) window.speechSynthesis.cancel();
-  }
-  function setPhaseAndStart(phase) {
-    if (!s.active && !s.manualPush) return;
-    if (s.running || s.starting) {
-      if (s.phase !== phase) { s.nextPhase = phase; stopRecognition(true); }
-      return;
-    }
-    clearTimeout(s.restartTimer);
-    s.commandText = '';
-    s.nextPhase = null;
-    s.stopping = false;
-    status('starting');
-    try {
-      s.starting = true;
-      s.recognition.start();
-    } catch (error) {
-      s.starting = false;
-      if (error.name === 'InvalidStateError') {
-        s.restartTimer = setTimeout(() => setPhaseAndStart(phase), 350);
-        return;
-      }
-      fail(error.name === 'NotAllowedError'
-        ? 'Microphone permission was denied. Allow microphone access for this site in Chrome/Safari settings, then start Hands-Free again.'
-        : 'The microphone could not start. Check that it is connected and that this site is using HTTPS.');
-    }
-  }
-  function stopRecognition(transition = false) {
-    clearTimeout(s.silenceTimer);
-    if (transition) s.stopping = true;
-    if (s.recognition && (s.running || s.starting)) {
-      try { s.recognition.stop(); } catch (_) { s.running = false; s.starting = false; }
-    }
-  }
-  function fail(message) {
-    s.active = false; s.manualPush = false; s.nextPhase = null;
-    clearTimeout(s.restartTimer); clearTimeout(s.silenceTimer);
-    stopRecognition(); status('error'); notify(message);
-  }
-  function renderAck() {
-    const bubble = document.createElement('div');
-    bubble.className = 'bubble assistant wake-acknowledgement';
-    const who = document.createElement('div'); who.className = 'who'; who.textContent = 'J.A.R.V.I.S.';
-    const content = document.createElement('div'); content.textContent = 'Yes, sir?';
-    bubble.append(who, content); el.log.appendChild(bubble); el.log.scrollTop = el.log.scrollHeight;
-  }
-  function afterAcknowledgement(commandTail) {
-    el.reactor?.classList.remove('activated');
-    if (commandTail) { s.commandText = commandTail; submitCommand(commandTail); }
-    else setPhaseAndStart('command');
-  }
-  function activateWake(tail) {
-    if (s.phase !== 'wake') return;
-    s.pendingWake = true;
-    s.nextPhase = 'activated';
-    s.commandText = tail || '';
-    stopRecognition(true);
-  }
-  function submitCommand(text) {
-    const command = String(text || '').trim();
-    if (!command) { setPhaseAndStart('command'); return; }
-    if (stopPhrase(command)) {
-      stopHandsFree(); notify('Hands-free listening is off.'); return;
-    }
-    const now = Date.now(), normalized = command.toLowerCase();
-    if (normalized === s.lastSent && now - s.lastSentAt < 3000) return;
-    s.lastSent = normalized; s.lastSentAt = now;
-    s.commandText = '';
-    s.pendingWake = false;
-    status('thinking');
-    el.input.value = command;
-    el.form.requestSubmit();
-  }
-  function responseAdded(node) {
-    if (!(node instanceof Element) || !node.matches('.bubble.assistant') || node.classList.contains('wake-acknowledgement')) return;
-    if (node.querySelector('.typing')) return;
-    const text = node.lastElementChild?.textContent?.trim();
-    if (!text || node.dataset.voiceRepairHandled) return;
-    node.dataset.voiceRepairHandled = 'true';
-    clearTimeout(s.responseTimer);
-    // The existing application still owns AI requests and message rendering. Its
-    // browser TTS only runs for its private hands-free state, so this module speaks
-    // the real response when that private mode is not active (i.e. our repaired mode).
-    if (!node.classList.contains('error') && el.voice?.checked && !s.muted) {
-      status('speaking');
-      speak(text, () => resumeAfterResponse());
-    } else resumeAfterResponse();
-  }
-  function resumeAfterResponse() {
-    if (!s.active && !s.manualPush) return;
-    if (s.manualPush) { s.manualPush = false; status('idle'); return; }
-    status('resuming');
-    setTimeout(() => {
-      if (!s.active || document.hidden) return;
-      setPhaseAndStart(el.continuous?.checked ? 'command' : 'wake');
-    }, 350);
-  }
-  function startHandsFree() {
-    if (!s.recognition) { notify('Hands-free speech recognition is not supported in this browser. Text chat and push-to-talk alternatives remain available where supported.'); return; }
-    if (location.protocol !== 'https:' && location.hostname !== 'localhost') { notify('Microphone access requires a secure HTTPS page.'); return; }
-    s.active = true; s.manualPush = false; s.restarts = 0;
-    el.handsfree.classList.add('active');
-    if (window.speechSynthesis && !s.speechUnlocked) {
-      try { const u = new SpeechSynthesisUtterance(' '); u.volume = 0; window.speechSynthesis.speak(u); s.speechUnlocked = true; } catch (_) {}
-    }
-    setPhaseAndStart('wake');
-  }
-  function stopHandsFree() {
-    s.active = false; s.manualPush = false; s.pendingWake = false; s.nextPhase = null; s.commandText = '';
-    clearTimeout(s.restartTimer); clearTimeout(s.silenceTimer); clearTimeout(s.responseTimer);
-    el.reactor?.classList.remove('activated');
-    stopRecognition(); status('idle');
-  }
-  function startPushToTalk() {
-    if (!s.recognition) { notify('Speech recognition is unavailable. You can still type a message.'); return; }
-    s.manualPush = true;
-    s.active = false;
-    setPhaseAndStart('command');
-  }
-  function processResults(event) {
-    if (!s.active && !s.manualPush) return;
-    let heard = '';
-    for (let i = 0; i < event.results.length; i++) {
-      const result = event.results[i];
-      if (result?.[0]?.transcript) heard += ` ${result[0].transcript}`;
-    }
-    heard = heard.trim();
-    if (!heard) return;
-    if (s.phase === 'wake') {
-      const tail = wakeTail(heard);
-      if (tail !== null) activateWake(tail);
-      return;
-    }
-    if (s.phase !== 'command') return;
-    s.commandText = heard;
-    clearTimeout(s.silenceTimer);
-    s.silenceTimer = setTimeout(() => {
-      if (s.phase !== 'command' || !s.commandText.trim()) return;
-      const text = s.commandText.trim();
-      stopRecognition(true);
-      s.nextPhase = 'submit';
-      s.pendingText = text;
-    }, Math.max(600, Number(el.silence?.value || 1200)));
-  }
-  function initializeRecognition() {
-    if (!recCtor) {
-      el.handsfree.disabled = true; el.mic.disabled = true;
-      el.state.dataset.state = 'unsupported'; el.stateText.textContent = labels.unsupported;
-      if (el.voiceStatus) el.voiceStatus.textContent = 'NOT SUPPORTED';
-      return;
-    }
-    const recognition = new recCtor();
-    s.recognition = recognition;
-    recognition.lang = 'en-GB'; recognition.continuous = true; recognition.interimResults = true; recognition.maxAlternatives = 3;
-    recognition.onstart = () => {
-      s.starting = false; s.running = true; s.restarts = 0;
-      if (s.phase === 'starting') s.phase = s.nextPhase || 'wake';
-      status(s.phase === 'command' ? 'command' : s.phase === 'activated' ? 'activated' : 'wake');
-    };
-    recognition.onresult = processResults;
-    recognition.onerror = event => {
-      s.starting = false;
-      if (event.error === 'aborted' || event.error === 'no-speech') return;
-      if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
-        fail('Microphone permission was denied. Allow microphone access in browser/site settings, then press Hands-Free again.'); return;
-      }
-      if (event.error === 'audio-capture') { fail('No microphone is available. Connect or enable a microphone, then try again.'); return; }
-      if (event.error === 'network') notify('Speech recognition network error. Check your connection; hands-free will retry while the page remains active.');
-    };
-    recognition.onend = () => {
-      s.running = false; s.starting = false;
-      if (!s.active && !s.manualPush) { status('idle'); return; }
-      if (s.pendingWake) {
-        s.pendingWake = false;
-        s.phase = 'activated'; status('activated'); sound(); el.reactor?.classList.add('activated');
-        renderAck();
-        speak('Yes, sir?', () => afterAcknowledgement(s.commandText));
-        if (!window.speechSynthesis || !el.voice?.checked || s.muted) afterAcknowledgement(s.commandText);
-        return;
-      }
-      if (s.nextPhase === 'submit') {
-        const command = s.pendingText; s.pendingText = ''; s.nextPhase = null;
-        if (command) submitCommand(command);
-        return;
-      }
-      if (s.nextPhase) {
-        const next = s.nextPhase; s.nextPhase = null;
-        if (next === 'activated') { s.pendingWake = true; return; }
-        if (next === 'stop') { status('idle'); return; }
-        setPhaseAndStart(next); return;
-      }
-      if (s.manualPush) { s.manualPush = false; status('idle'); return; }
-      if (s.active && !document.hidden) {
-        status('resuming');
-        const delay = Math.min(3000, 400 * (2 ** Math.min(s.restarts++, 3)));
-        clearTimeout(s.restartTimer);
-        s.restartTimer = setTimeout(() => setPhaseAndStart(s.phase === 'command' ? 'command' : 'wake'), delay);
-      }
-    };
-  }
-
-  // Intercept the existing controls before the original listener; no HUD redesign.
-  document.addEventListener('click', event => {
-    const target = event.target.closest('#handsfree-button,#stop-listening-button,#mic-button');
-    if (!target) return;
-    event.preventDefault(); event.stopImmediatePropagation();
-    if (target === el.handsfree) s.active ? stopHandsFree() : startHandsFree();
-    else if (target === el.stop) stopHandsFree();
-    else if (s.speaking && el.interrupt?.checked) { stopSpeaking(); s.manualPush = true; s.active = false; setPhaseAndStart('command'); }
-    else if (s.active || s.manualPush) stopHandsFree();
-    else startPushToTalk();
-  }, true);
-
-  // Submit voice commands through the existing form handler/backend, unchanged.
-  el.form.addEventListener('submit', event => {
-    if (!s.active && !s.manualPush) return;
-    s.commandText = '';
-    clearTimeout(s.silenceTimer);
-    stopRecognition();
-    status('thinking');
-    clearTimeout(s.responseTimer);
-    s.responseTimer = setTimeout(() => {
-      if ((s.active || s.manualPush) && s.phase === 'thinking') resumeAfterResponse();
-    }, 50000);
-  }, true);
-
-  s.observer = new MutationObserver(records => {
-    for (const record of records) for (const node of record.addedNodes) {
-      if (node.nodeType === Node.ELEMENT_NODE) {
-        responseAdded(node);
-        node.querySelectorAll?.('.bubble.assistant').forEach(responseAdded);
-      }
-    }
-  });
-  s.observer.observe(el.log, { childList: true, subtree: true });
-
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden && s.active) {
-      stopHandsFree(); notify('Hands-free paused because JARVIS is no longer visible. Return to the app and tap Hands-Free to resume. Background wake-word listening is not supported.');
-    }
-  });
-  window.addEventListener('pagehide', stopHandsFree);
-  initializeRecognition();
+  // Capture before the old inline click listeners to guarantee one recognizer.
+  document.addEventListener('click',event=>{const target=event.target instanceof Element?event.target.closest('#handsfree-button,#stop-listening-button,#mic-button'):null;if(!target)return;event.preventDefault();event.stopImmediatePropagation();if(target===el.handsfree)state.active?stopAll():startHandsFree();else if(target===el.stop)stopAll();else if(state.active||state.push)stopAll();else pushToTalk();},true);
+  // Original form owns the API request. This only suspends its browser TTS for a
+  // voice-submitted command, then speaks its rendered response through provider.
+  el.form.addEventListener('submit',()=>{if(!state.voiceRequest)return;state.voiceRequest=false;clearTimeout(state.silence);stopRecognition();setStatus('thinking');state.originalVoiceEnabled=Boolean(el.voice?.checked);if(el.voice)el.voice.checked=false;clearTimeout(state.replyTimeout);state.replyTimeout=setTimeout(()=>{if(state.originalVoiceEnabled!==null){el.voice.checked=state.originalVoiceEnabled;state.originalVoiceEnabled=null;}if(state.active||state.push){notify('JARVIS response timed out. Listening can resume; please retry your message.');if(state.push){state.push=false;setStatus('idle');}else start(el.continuous?.checked?'command':'wake');}},50000);},true);
+  const observer=new MutationObserver(records=>{for(const r of records)for(const n of r.addedNodes)if(n instanceof Element){if(n.matches('.bubble.assistant'))responseReady(n);n.querySelectorAll?.('.bubble.assistant').forEach(responseReady);}});observer.observe(el.log,{childList:true,subtree:true});
+  // Interruption listening is opt-in. SpeechRecognition while audio is playing
+  // can mistake the assistant for the user, so we stop and report this limit.
+  el.interrupt?.addEventListener('change',()=>{if(el.interrupt.checked)notify('Interruption mode is limited by browser echo cancellation; use the stop button to interrupt reliably.');});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden&&state.active){stopAll();notify('Hands-free paused because JARVIS is no longer visible. Return and tap Hands-Free to resume. Background wake-word listening is not supported.');}});window.addEventListener('pagehide',stopAll);
+  voice.onVoicesChanged(()=>{const d=voice.diagnostics;if(el.voiceStatus)el.voiceStatus.textContent=d.selectedVoice?`${d.selectedVoice} · ${d.selectedLanguage}`:'NO VOICE AVAILABLE';});
+  init();
 })();
