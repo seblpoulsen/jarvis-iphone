@@ -9,11 +9,11 @@
   <link rel="icon" href="./assets/jarvis-icon.svg" type="image/svg+xml">
   <title>J.A.R.V.I.S. — Personal Assistant</title>
   <style>
-    :root{color-scheme:dark;--bg:#030914;--panel:#071a2a;--panel-2:#091f32;--cyan:#48d9ff;--blue:#1675c9;--muted:#79a9bd;--line:#17608099;--text:#e9faff;--danger:#ff8b87;--nav-height:68px;--safe-bottom:env(safe-area-inset-bottom,0px)}
+    :root{color-scheme:dark;--bg:#030914;--panel:#071a2a;--cyan:#48d9ff;--blue:#1675c9;--muted:#79a9bd;--line:#17608099;--text:#e9faff;--danger:#ff8b87;--nav-height:68px;--safe-bottom:env(safe-area-inset-bottom,0px)}
     *{box-sizing:border-box}html{min-height:100%;background:var(--bg);scroll-behavior:smooth}body{margin:0;min-height:100vh;min-height:100dvh;background:radial-gradient(ellipse at 50% 20%,#0a2940 0,#030914 58%);color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;overflow-x:hidden}body[data-theme="ice"]{--cyan:#8deaff;--blue:#4a9cff;--muted:#a2cde0;--line:#3983a899}body[data-theme="amber"]{--cyan:#ffc86b;--blue:#d77927;--muted:#c5a783;--line:#8c602e99}
-    button,input,textarea,select{font:inherit}button{touch-action:manipulation}.app{width:min(100%,980px);min-height:100vh;min-height:100dvh;margin:0 auto;padding:calc(18px + env(safe-area-inset-top,0px)) 22px calc(var(--nav-height) + 32px + var(--safe-bottom));position:relative}header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;gap:12px}.eyebrow,.status,.panel h2,.panel h3,.small,.sub,.who,.nav-button,.setting-label{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}.eyebrow{font-size:9px;letter-spacing:3px;color:var(--muted)}h1{font-size:23px;font-weight:300;letter-spacing:6px;margin:5px 0}.status{font-size:9px;color:var(--cyan);letter-spacing:1px;white-space:nowrap}.status:before{content:"";display:inline-block;width:7px;height:7px;margin-right:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 9px var(--cyan)}.status.busy:before{animation:pulse 1s infinite}.status.offline{color:var(--danger)}
+    button,input,textarea,select{font:inherit}button{touch-action:manipulation}.app{width:min(100%,980px);min-height:100vh;min-height:100dvh;margin:0 auto;padding:calc(18px + env(safe-area-inset-top,0px)) 22px calc(var(--nav-height) + 32px + var(--safe-bottom));position:relative}header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;gap:12px}.eyebrow,.status,.panel h3,.small,.sub,.who,.nav-button,.setting-label{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}.eyebrow{font-size:9px;letter-spacing:3px;color:var(--muted)}h1{font-size:23px;font-weight:300;letter-spacing:6px;margin:5px 0}.status{font-size:9px;color:var(--cyan);letter-spacing:1px;white-space:nowrap}.status:before{content:"";display:inline-block;width:7px;height:7px;margin-right:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 9px var(--cyan)}.status.busy:before{animation:pulse 1s infinite}.status.offline{color:var(--danger)}
     .view{display:none}.view.active{display:block;animation:fade-in .2s ease-out}.reactor{height:250px;display:grid;place-items:center;position:relative}.ring{position:absolute;border:1px solid #1a7ba0;border-radius:50%;animation:spin 22s linear infinite}.r1{width:218px;height:218px;border-style:dashed;border-color:color-mix(in srgb,var(--cyan) 55%,transparent)}.r2{width:184px;height:184px;border-color:color-mix(in srgb,var(--cyan) 28%,transparent);animation-direction:reverse;animation-duration:16s}.r3{width:142px;height:142px;box-shadow:0 0 45px color-mix(in srgb,var(--cyan) 18%,transparent),inset 0 0 28px color-mix(in srgb,var(--cyan) 15%,transparent);border-color:color-mix(in srgb,var(--cyan) 50%,transparent)}.core{text-align:center;z-index:1}.atom{font-size:48px;color:var(--cyan);text-shadow:0 0 24px var(--cyan);line-height:1.2}.core b{display:block;letter-spacing:5px;font-weight:400}.core small{display:block;margin-top:8px;font:8px ui-monospace,monospace;letter-spacing:2px;color:var(--muted)}.sub{text-align:center;color:var(--muted);font-size:9px;letter-spacing:2px;margin-top:-3px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:20px 0 12px}.panel{background:color-mix(in srgb,var(--panel) 90%,transparent);border:1px solid var(--line);border-radius:13px;padding:15px;box-shadow:0 8px 26px #0002}.panel h3{font-size:10px;letter-spacing:2px;color:var(--cyan);margin:0 0 11px}.big{font:22px ui-monospace,monospace}.small{font-size:10px;line-height:1.5;color:var(--muted);margin-top:5px}.diagnostics{grid-column:1/-1}.meter{height:3px;background:#12364b;border-radius:4px;margin:7px 0 13px;overflow:hidden}.meter i{display:block;height:100%;background:var(--cyan);box-shadow:0 0 8px var(--cyan)}.action,.send-button{border:0;border-radius:10px;padding:14px 16px;background:linear-gradient(100deg,var(--cyan),var(--blue));color:#03111c;font:bold 11px ui-monospace,monospace;letter-spacing:1.4px;cursor:pointer}.action{width:100%;margin-top:8px}.action:hover,.send-button:hover{filter:brightness(1.12)}button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
-    .chat-panel{padding:14px;min-height:min(67vh,680px);display:flex;flex-direction:column}.chat-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:12px;border-bottom:1px solid var(--line)}.chat-heading h3{margin:0}.icon-button{min-width:42px;min-height:42px;border:1px solid var(--line);border-radius:10px;color:var(--cyan);background:#071a2a;cursor:pointer;font-size:17px}.chatlog{flex:1;min-height:230px;max-height:calc(100dvh - 270px);overflow:auto;display:flex;flex-direction:column;gap:12px;padding:15px 2px;overscroll-behavior:contain;scrollbar-color:#176080 transparent;scrollbar-width:thin}.empty-state{margin:auto;text-align:center;padding:24px;color:var(--muted);font-size:13px;line-height:1.7}.empty-state .atom{font-size:28px}.bubble{padding:12px 14px;border:1px solid var(--line);background:var(--panel);border-radius:13px;max-width:min(86%,680px);font-size:14px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere}.bubble.user{align-self:flex-end;background:#0b3150}.bubble.assistant{align-self:flex-start}.bubble.error{border-color:#a34b51;color:#ffd2d0}.who{font-size:9px;letter-spacing:2px;color:var(--cyan);margin-bottom:6px}.bubble.user .who{color:#a7d8ff}.typing{display:flex;align-items:center;gap:5px;min-height:20px}.typing i{width:5px;height:5px;border-radius:50%;background:var(--cyan);animation:pulse .9s infinite}.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}.composer{display:flex;align-items:flex-end;gap:8px;padding-top:10px;border-top:1px solid var(--line)}.composer textarea{min-width:0;flex:1;max-height:150px;min-height:46px;resize:none;background:#071a2a;border:1px solid var(--line);border-radius:11px;padding:12px;color:var(--text);font-size:16px;line-height:1.35}.send-button{min-height:46px;padding:0 16px}.send-button:disabled{opacity:.55;cursor:wait}.voice-button.listening{color:#fff;background:#a83037;box-shadow:0 0 18px #ff5b67}.hint{margin:9px 2px 0}.setting{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--line);font-size:13px}.setting:last-of-type{border-bottom:0}.setting-label{font-size:11px;letter-spacing:.3px}.setting input[type=checkbox]{width:21px;height:21px;accent-color:var(--cyan)}.setting select,.setting input[type=range]{width:min(48%,190px);accent-color:var(--cyan)}.setting select{background:#071a2a;border:1px solid var(--line);color:var(--text);border-radius:8px;padding:9px}.setting .range-value{font:11px ui-monospace,monospace;color:var(--cyan);min-width:36px;text-align:right}.setting-control{display:flex;align-items:center;gap:8px;justify-content:flex-end;min-width:58%}.setting-control select{width:min(100%,280px)}.setting-control input[type=range]{flex:1;min-width:70px}.about{margin-top:16px}.voice-actions{margin-top:12px}nav{position:fixed;z-index:5;bottom:0;left:50%;transform:translateX(-50%);width:min(100%,980px);display:flex;justify-content:space-around;gap:4px;padding:8px 14px calc(8px + var(--safe-bottom));background:#061522ed;border-top:1px solid var(--line);backdrop-filter:blur(14px)}.nav-button{min-height:48px;min-width:76px;background:none;border:0;color:var(--muted);font-size:10px;letter-spacing:1px;cursor:pointer}.nav-button.active{color:var(--cyan);text-shadow:0 0 10px color-mix(in srgb,var(--cyan) 70%,transparent)}.notice{position:fixed;z-index:10;left:50%;bottom:calc(var(--nav-height) + var(--safe-bottom) + 12px);transform:translate(-50%,12px);opacity:0;pointer-events:none;padding:10px 14px;border:1px solid var(--line);border-radius:9px;background:#071a2a;color:var(--text);font-size:12px;transition:.2s}.notice.show{opacity:1;transform:translate(-50%,0)}
+    .chat-panel{padding:14px;min-height:min(67vh,680px);display:flex;flex-direction:column}.chat-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:12px;border-bottom:1px solid var(--line)}.chat-heading h3{margin:0}.icon-button{min-width:42px;min-height:42px;border:1px solid var(--line);border-radius:10px;color:var(--cyan);background:#071a2a;cursor:pointer;font-size:17px}.chatlog{flex:1;min-height:230px;max-height:calc(100dvh - 270px);overflow:auto;display:flex;flex-direction:column;gap:12px;padding:15px 2px;overscroll-behavior:contain;scrollbar-color:#176080 transparent;scrollbar-width:thin}.empty-state{margin:auto;text-align:center;padding:24px;color:var(--muted);font-size:13px;line-height:1.7}.empty-state .atom{font-size:28px}.bubble{padding:12px 14px;border:1px solid var(--line);background:var(--panel);border-radius:13px;max-width:min(86%,680px);font-size:14px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere}.bubble.user{align-self:flex-end;background:#0b3150}.bubble.assistant{align-self:flex-start}.bubble.error{border-color:#a34b51;color:#ffd2d0}.who{font-size:9px;letter-spacing:2px;color:var(--cyan);margin-bottom:6px}.bubble.user .who{color:#a7d8ff}.typing{display:flex;align-items:center;gap:5px;min-height:20px}.typing i{width:5px;height:5px;border-radius:50%;background:var(--cyan);animation:pulse .9s infinite}.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}.composer{display:flex;align-items:flex-end;gap:8px;padding-top:10px;border-top:1px solid var(--line)}.composer textarea{min-width:0;flex:1;max-height:150px;min-height:46px;resize:none;background:#071a2a;border:1px solid var(--line);border-radius:11px;padding:12px;color:var(--text);font-size:16px;line-height:1.35}.send-button{min-height:46px;padding:0 16px}.send-button:disabled{opacity:.55;cursor:wait}.voice-button.listening{color:#fff;background:#a83037;box-shadow:0 0 18px #ff5b67}.hint{margin:9px 2px 0}.setting{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--line);font-size:13px}.setting:last-of-type{border-bottom:0}.setting-label{font-size:11px;letter-spacing:.3px}.setting input[type=checkbox]{width:21px;height:21px;accent-color:var(--cyan)}.setting select,.setting input[type=range]{width:min(48%,190px);accent-color:var(--cyan)}.setting select{background:#071a2a;border:1px solid var(--line);color:var(--text);border-radius:8px;padding:9px}.setting .range-value{font:11px ui-monospace,monospace;color:var(--cyan);min-width:36px;text-align:right}.setting-control{display:flex;align-items:center;gap:8px;justify-content:flex-end;min-width:58%}.setting-control select{width:min(100%,280px)}.setting-control input[type=range]{flex:1;min-width:70px}.voice-help{padding:8px 0 12px}.about{margin-top:16px}.voice-actions{margin-top:12px}nav{position:fixed;z-index:5;bottom:0;left:50%;transform:translateX(-50%);width:min(100%,980px);display:flex;justify-content:space-around;gap:4px;padding:8px 14px calc(8px + var(--safe-bottom));background:#061522ed;border-top:1px solid var(--line);backdrop-filter:blur(14px)}.nav-button{min-height:48px;min-width:76px;background:none;border:0;color:var(--muted);font-size:10px;letter-spacing:1px;cursor:pointer}.nav-button.active{color:var(--cyan);text-shadow:0 0 10px color-mix(in srgb,var(--cyan) 70%,transparent)}.notice{position:fixed;z-index:10;left:50%;bottom:calc(var(--nav-height) + var(--safe-bottom) + 12px);transform:translate(-50%,12px);opacity:0;pointer-events:none;padding:10px 14px;border:1px solid var(--line);border-radius:9px;background:#071a2a;color:var(--text);font-size:12px;transition:.2s}.notice.show{opacity:1;transform:translate(-50%,0)}
     @keyframes spin{to{transform:rotate(360deg)}}@keyframes pulse{50%{opacity:.35;transform:scale(.8)}}@keyframes fade-in{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}@media(min-width:700px){.app{padding:26px 36px calc(var(--nav-height) + 34px)}header{margin-bottom:24px}.reactor{height:280px}.grid{grid-template-columns:repeat(3,minmax(0,1fr));margin-top:16px}.diagnostics{grid-column:auto}.chat-panel{min-height:70vh}.chatlog{max-height:calc(100dvh - 300px)}nav{border-left:1px solid var(--line);border-right:1px solid var(--line);border-radius:14px 14px 0 0}.nav-button{min-width:130px}}@media(max-width:380px){.app{padding-left:14px;padding-right:14px}.status{font-size:8px}.grid{gap:8px}.panel{padding:12px}.reactor{height:228px}.r1{width:200px;height:200px}.r2{width:168px;height:168px}.r3{width:130px;height:130px}.composer{gap:6px}.send-button{padding:0 12px}.icon-button{min-width:40px}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
   </style>
 </head>
@@ -21,373 +21,124 @@
   <main class="app">
     <header><div><div class="eyebrow">STARK INDUSTRIES</div><h1>J.A.R.V.I.S.</h1></div><div id="system-status" class="status" role="status">SYSTEM READY</div></header>
     <section id="hud" class="view active" aria-label="Assistant dashboard">
-      <div class="reactor" aria-hidden="true"><div class="ring r1"></div><div class="ring r2"></div><div class="ring r3"></div><div class="core"><div class="atom">◉</div><b>JARVIS</b><small>PERSONAL ASSISTANT</small></div></div>
-      <div class="sub">PERSONAL ASSISTANT SYSTEM</div>
-      <div class="grid">
-        <div class="panel"><h3>LOCAL TIME</h3><div class="big" id="clock">--:--</div><div class="small" id="date">Loading local date</div></div>
-        <div class="panel"><h3>DEVICE</h3><div class="big">J.A.R.V.I.S.</div><div class="small">Responsive web interface</div></div>
-        <div class="panel diagnostics"><h3>SYSTEM DIAGNOSTICS</h3><div class="small">CORE INTERFACE <span style="float:right;color:var(--cyan)">ONLINE</span></div><div class="meter"><i style="width:100%"></i></div><div class="small">AI CHANNEL <span id="ai-status-label" style="float:right;color:var(--cyan)">READY</span></div><div class="meter"><i id="ai-meter" style="width:100%"></i></div><div class="small">VOICE INPUT <span id="voice-status-label" style="float:right;color:var(--cyan)">CHECKING SUPPORT</span></div></div>
-      </div>
+      <div class="reactor" aria-hidden="true"><div class="ring r1"></div><div class="ring r2"></div><div class="ring r3"></div><div class="core"><div class="atom">◉</div><b>JARVIS</b><small>PERSONAL ASSISTANT</small></div></div><div class="sub">PERSONAL ASSISTANT SYSTEM</div>
+      <div class="grid"><div class="panel"><h3>LOCAL TIME</h3><div class="big" id="clock">--:--</div><div class="small" id="date">Loading local date</div></div><div class="panel"><h3>DEVICE</h3><div class="big">J.A.R.V.I.S.</div><div class="small">Responsive web interface</div></div><div class="panel diagnostics"><h3>SYSTEM DIAGNOSTICS</h3><div class="small">CORE INTERFACE <span style="float:right;color:var(--cyan)">ONLINE</span></div><div class="meter"><i style="width:100%"></i></div><div class="small">AI CHANNEL <span id="ai-status-label" style="float:right;color:var(--cyan)">READY</span></div><div class="meter"><i id="ai-meter" style="width:100%"></i></div><div class="small">VOICE INPUT <span id="voice-status-label" style="float:right;color:var(--cyan)">CHECKING SUPPORT</span></div></div></div>
       <button class="action" type="button" data-tab="chat">INITIATE CONVERSATION →</button>
     </section>
-    <section id="chat" class="view" aria-label="Chat with JARVIS">
-      <div class="panel chat-panel"><div class="chat-heading"><h3>J.A.R.V.I.S. · LIVE CHANNEL</h3><button class="icon-button voice-button" id="mic-button" type="button" aria-label="Start voice input" title="Start voice input">🎙</button></div>
-        <div class="chatlog" id="chatlog" role="log" aria-live="polite" aria-relevant="additions text"><div class="empty-state" id="empty-state"><div class="atom" aria-hidden="true">◉</div>Your conversation will appear here.<br>Send a message to begin.</div></div>
-        <form class="composer" id="composer"><textarea id="msg" rows="1" placeholder="Transmit a message…" aria-label="Message to JARVIS" enterkeyhint="send"></textarea><button class="icon-button" id="mute-button" type="button" aria-label="Mute spoken responses" title="Mute spoken responses">🔊</button><button class="send-button" id="send-button" type="submit">SEND</button></form><p class="small hint">Enter to send · Shift + Enter for a new line</p>
-      </div>
-    </section>
-    <section id="settings" class="view" aria-label="Assistant settings">
-      <div class="panel"><h3>CONFIGURATION</h3>
-        <label class="setting"><span class="setting-label">Spoken responses</span><input id="voice-enabled" type="checkbox" checked></label>
-        <div class="setting"><label class="setting-label" for="voice-select">British voice</label><div class="setting-control"><select id="voice-select" aria-label="Select a British English voice"><option value="auto">Automatic — best available en-GB voice</option></select></div></div>
-        <div class="setting"><label class="setting-label" for="speech-speed">Voice speed</label><div class="setting-control"><input id="speech-speed" type="range" min="0.75" max="1.15" step="0.01" value="0.92"><output id="speech-speed-value" class="range-value">0.92×</output></div></div>
-        <div class="setting"><label class="setting-label" for="speech-pitch">Voice pitch</label><div class="setting-control"><input id="speech-pitch" type="range" min="0.75" max="1.25" step="0.01" value="0.95"><output id="speech-pitch-value" class="range-value">0.95</output></div></div>
-        <div class="setting"><label class="setting-label" for="speech-volume">Voice volume</label><div class="setting-control"><input id="speech-volume" type="range" min="0" max="1" step="0.05" value="1"><output id="speech-volume-value" class="range-value">100%</output></div></div>
-        <button id="test-voice" class="action voice-actions" type="button">TEST JARVIS VOICE</button>
-        <label class="setting"><span class="setting-label">Sound effects</span><input id="sound-enabled" type="checkbox"></label>
-        <label class="setting"><span class="setting-label" for="theme-select">Interface theme</span><select id="theme-select"><option value="classic">Classic cyan</option><option value="ice">Ice blue</option><option value="amber">Stark amber</option></select></label>
-        <div class="setting"><span class="setting-label">Voice input</span><span id="recognition-setting" class="small">Checking browser support…</span></div>
-        <button id="clear-button" class="action" type="button">CLEAR CONVERSATION</button>
-      </div>
-      <div class="panel about"><h3>ABOUT J.A.R.V.I.S.</h3><p class="small">A personal assistant interface connected to its configured Cloudflare AI service. Voice input depends on browser speech recognition support; spoken responses use your browser's speech synthesis.</p><p class="small">Messages are kept in this page session and sent to the configured assistant service when you submit them.</p></div>
-    </section>
+    <section id="chat" class="view" aria-label="Chat with JARVIS"><div class="panel chat-panel"><div class="chat-heading"><h3>J.A.R.V.I.S. · LIVE CHANNEL</h3><button class="icon-button voice-button" id="mic-button" type="button" aria-label="Start voice input" title="Start voice input">🎙</button></div><div class="chatlog" id="chatlog" role="log" aria-live="polite" aria-relevant="additions text"><div class="empty-state" id="empty-state"><div class="atom" aria-hidden="true">◉</div>Your conversation will appear here.<br>Send a message to begin.</div></div><form class="composer" id="composer"><textarea id="msg" rows="1" placeholder="Transmit a message…" aria-label="Message to JARVIS" enterkeyhint="send"></textarea><button class="icon-button" id="mute-button" type="button" aria-label="Mute spoken responses" title="Mute spoken responses">🔊</button><button class="send-button" id="send-button" type="submit">SEND</button></form><p class="small hint">Enter to send · Shift + Enter for a new line</p></div></section>
+    <section id="settings" class="view" aria-label="Assistant settings"><div class="panel"><h3>CONFIGURATION</h3>
+      <label class="setting"><span class="setting-label">Spoken responses</span><input id="voice-enabled" type="checkbox" checked></label>
+      <div class="setting"><label class="setting-label" for="voice-select">British voice</label><div class="setting-control"><select id="voice-select" aria-label="Select a British English voice"><option value="auto">Loading browser voices…</option></select></div></div>
+      <p class="small voice-help" id="voice-help">Voice options are supplied by your browser and device. For a British voice on Windows: open Settings → Time & language → Language & region, add English (United Kingdom), open its Language options, and install a Text-to-speech voice if offered. Restart Chrome and reload this page.</p>
+      <div class="setting"><label class="setting-label" for="speech-speed">Voice speed</label><div class="setting-control"><input id="speech-speed" type="range" min="0.75" max="1.15" step="0.01" value="0.90"><output id="speech-speed-value" class="range-value">0.90×</output></div></div>
+      <div class="setting"><label class="setting-label" for="speech-pitch">Voice pitch</label><div class="setting-control"><input id="speech-pitch" type="range" min="0.75" max="1.25" step="0.01" value="0.90"><output id="speech-pitch-value" class="range-value">0.90</output></div></div>
+      <div class="setting"><label class="setting-label" for="speech-volume">Voice volume</label><div class="setting-control"><input id="speech-volume" type="range" min="0" max="1" step="0.05" value="1"><output id="speech-volume-value" class="range-value">100%</output></div></div>
+      <button id="test-voice" class="action voice-actions" type="button">TEST JARVIS VOICE</button>
+      <label class="setting"><span class="setting-label">Sound effects</span><input id="sound-enabled" type="checkbox"></label>
+      <label class="setting"><span class="setting-label" for="theme-select">Interface theme</span><select id="theme-select"><option value="classic">Classic cyan</option><option value="ice">Ice blue</option><option value="amber">Stark amber</option></select></label>
+      <div class="setting"><span class="setting-label">Voice input</span><span id="recognition-setting" class="small">Checking browser support…</span></div>
+      <button id="clear-button" class="action" type="button">CLEAR CONVERSATION</button>
+    </div><div class="panel about"><h3>ABOUT J.A.R.V.I.S.</h3><p class="small">A personal assistant interface connected to its configured Cloudflare AI service. Voice input depends on browser speech recognition support; spoken responses use your browser's speech synthesis.</p><p class="small">Messages are kept in this page session and sent to the configured assistant service when you submit them.</p></div></section>
   </main>
-  <nav aria-label="Main navigation"><button class="nav-button active" type="button" data-tab="hud">◈ HUD</button><button class="nav-button" type="button" data-tab="chat">▤ CHAT</button><button class="nav-button" type="button" data-tab="settings">⚙ SETTINGS</button></nav>
-  <div id="notice" class="notice" role="status" aria-live="polite"></div>
+  <nav aria-label="Main navigation"><button class="nav-button active" type="button" data-tab="hud">◈ HUD</button><button class="nav-button" type="button" data-tab="chat">▤ CHAT</button><button class="nav-button" type="button" data-tab="settings">⚙ SETTINGS</button></nav><div id="notice" class="notice" role="status" aria-live="polite"></div>
   <script>
     (() => {
       'use strict';
       const WORKER_URL = 'https://jarvis-ai.seblpoulsen.workers.dev/';
       const VOICE_TEST = 'Good evening. I am JARVIS, your personal assistant. How may I assist you today?';
+      const STORAGE_KEY = 'jarvis-assistant-settings-v2';
       const byId = id => document.getElementById(id);
-      const state = { busy: false, recognition: null, listening: false, muted: false, conversation: [], noticeTimer: 0, voices: [], selectedVoice: null, speechQueue: [], speechIndex: 0, speechRun: 0, speechUnlocked: false };
-      const elements = { log: byId('chatlog'), empty: byId('empty-state'), input: byId('msg'), send: byId('send-button'), mic: byId('mic-button'), status: byId('system-status'), aiLabel: byId('ai-status-label'), aiMeter: byId('ai-meter'), voiceLabel: byId('voice-status-label'), notice: byId('notice') };
+      const state = { busy:false, recognition:null, listening:false, muted:false, conversation:[], noticeTimer:0, voices:[], voicesReady:false, selectedVoice:null, speechQueue:[], speechIndex:0, speechRun:0, speechUnlocked:false };
+      const elements = { log:byId('chatlog'), input:byId('msg'), send:byId('send-button'), mic:byId('mic-button'), status:byId('system-status'), aiLabel:byId('ai-status-label'), aiMeter:byId('ai-meter'), voiceLabel:byId('voice-status-label'), notice:byId('notice') };
 
-      function updateClock() {
-        const now = new Date();
-        byId('clock').textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        byId('date').textContent = now.toLocaleDateString([], { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+      function loadSettings() {
+        let saved = {};
+        try { saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}') || {}; } catch (_) {}
+        if (typeof saved.voiceEnabled === 'boolean') byId('voice-enabled').checked = saved.voiceEnabled;
+        if (typeof saved.speed === 'number') byId('speech-speed').value = String(Math.max(.75, Math.min(1.15, saved.speed)));
+        if (typeof saved.pitch === 'number') byId('speech-pitch').value = String(Math.max(.75, Math.min(1.25, saved.pitch)));
+        if (typeof saved.volume === 'number') byId('speech-volume').value = String(Math.max(0, Math.min(1, saved.volume)));
+        if (typeof saved.soundEnabled === 'boolean') byId('sound-enabled').checked = saved.soundEnabled;
+        if (['classic','ice','amber'].includes(saved.theme)) { byId('theme-select').value = saved.theme; document.body.dataset.theme = saved.theme === 'classic' ? '' : saved.theme; }
+        if (typeof saved.voiceURI === 'string') byId('voice-select').dataset.savedVoice = saved.voiceURI;
+        updateRangeOutputs();
       }
-      function setStatus(message, mode = 'ready') {
-        elements.status.textContent = message;
-        elements.status.classList.toggle('busy', mode === 'busy');
-        elements.status.classList.toggle('offline', mode === 'error');
-        elements.aiLabel.textContent = mode === 'busy' ? 'PROCESSING' : mode === 'error' ? 'RETRY AVAILABLE' : 'READY';
-        elements.aiLabel.style.color = mode === 'error' ? 'var(--danger)' : 'var(--cyan)';
-        elements.aiMeter.style.width = mode === 'busy' ? '65%' : mode === 'error' ? '35%' : '100%';
+      function saveSettings() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify({ voiceEnabled:byId('voice-enabled').checked, speed:Number(byId('speech-speed').value), pitch:Number(byId('speech-pitch').value), volume:Number(byId('speech-volume').value), soundEnabled:byId('sound-enabled').checked, theme:byId('theme-select').value, voiceURI:byId('voice-select').value === 'auto' ? '' : byId('voice-select').value }));
+        } catch (_) { /* Private browsing may disable storage; settings still work for this page session. */ }
       }
-      function showNotice(message) {
-        elements.notice.textContent = message;
-        elements.notice.classList.add('show');
-        clearTimeout(state.noticeTimer);
-        state.noticeTimer = setTimeout(() => elements.notice.classList.remove('show'), 2800);
-      }
-      function addBubble(role, text, extraClass = '') {
-        elements.empty?.remove();
-        const bubble = document.createElement('div');
-        bubble.className = `bubble ${role}${extraClass ? ` ${extraClass}` : ''}`;
-        const who = document.createElement('div');
-        who.className = 'who';
-        who.textContent = role === 'user' ? 'YOU' : 'J.A.R.V.I.S.';
-        const content = document.createElement('div');
-        content.textContent = text;
-        bubble.append(who, content);
-        elements.log.appendChild(bubble);
-        scrollToLatest();
-        return bubble;
-      }
-      function scrollToLatest() { requestAnimationFrame(() => { elements.log.scrollTop = elements.log.scrollHeight; }); }
-      function switchTab(id) {
-        document.querySelectorAll('.view').forEach(view => view.classList.toggle('active', view.id === id));
-        document.querySelectorAll('.nav-button').forEach(button => button.classList.toggle('active', button.dataset.tab === id));
-        if (id === 'chat') setTimeout(() => { scrollToLatest(); elements.input.focus({ preventScroll: true }); }, 80);
-      }
+      function updateClock() { const now=new Date(); byId('clock').textContent=now.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}); byId('date').textContent=now.toLocaleDateString([],{weekday:'short',day:'numeric',month:'short',year:'numeric'}); }
+      function setStatus(message,mode='ready') { elements.status.textContent=message; elements.status.classList.toggle('busy',mode==='busy'); elements.status.classList.toggle('offline',mode==='error'); elements.aiLabel.textContent=mode==='busy'?'PROCESSING':mode==='error'?'RETRY AVAILABLE':'READY'; elements.aiLabel.style.color=mode==='error'?'var(--danger)':'var(--cyan)'; elements.aiMeter.style.width=mode==='busy'?'65%':mode==='error'?'35%':'100%'; }
+      function showNotice(message) { elements.notice.textContent=message; elements.notice.classList.add('show'); clearTimeout(state.noticeTimer); state.noticeTimer=setTimeout(()=>elements.notice.classList.remove('show'),3000); }
+      function addBubble(role,text,extraClass='') { byId('empty-state')?.remove(); const bubble=document.createElement('div'); bubble.className=`bubble ${role}${extraClass?` ${extraClass}`:''}`; const who=document.createElement('div'); who.className='who'; who.textContent=role==='user'?'YOU':'J.A.R.V.I.S.'; const content=document.createElement('div'); content.textContent=text; bubble.append(who,content); elements.log.appendChild(bubble); scrollToLatest(); return bubble; }
+      function scrollToLatest() { requestAnimationFrame(()=>{elements.log.scrollTop=elements.log.scrollHeight;}); }
+      function switchTab(id) { document.querySelectorAll('.view').forEach(view=>view.classList.toggle('active',view.id===id)); document.querySelectorAll('.nav-button').forEach(button=>button.classList.toggle('active',button.dataset.tab===id)); if(id==='chat')setTimeout(()=>{scrollToLatest();elements.input.focus({preventScroll:true});},80); }
       function voiceQualityScore(voice) {
-        const name = voice.name.toLowerCase();
-        let score = 0;
-        if (/en[-_]gb/i.test(voice.lang)) score += 1000;
-        else if (/^en/i.test(voice.lang)) score += 100;
-        if (/enhanced|premium|natural|neural|studio|high quality/i.test(name)) score += 80;
-        if (/daniel|arthur|oliver|george|ryan|alfie|serena|kate|google uk english/i.test(name)) score += 25;
-        if (/male|man/i.test(name)) score += 18;
-        if (/female|woman/i.test(name)) score -= 12;
-        if (/^en[-_]us/i.test(voice.lang)) score -= 180;
+        const name=voice.name.toLowerCase(); let score=0;
+        if(/^en[-_]gb/i.test(voice.lang))score+=1000; else if(/^en/i.test(voice.lang))score+=100;
+        if(/enhanced|premium|natural|neural|studio|high quality|online/i.test(name))score+=90;
+        if(/daniel|arthur|oliver|george|ryan|alfie|google uk english male|microsoft.*male/i.test(name))score+=45;
+        if(/female|woman|serena|kate|samantha|victoria|moira|hazel/i.test(name))score-=35;
+        if(/^en[-_]us/i.test(voice.lang))score-=220;
         return score;
       }
-      function bestVoice() {
-        const british = state.voices.filter(voice => /^en[-_]gb/i.test(voice.lang));
-        const candidates = british.length ? british : state.voices.filter(voice => /^en/i.test(voice.lang));
-        return [...candidates].sort((a, b) => voiceQualityScore(b) - voiceQualityScore(a))[0] || state.voices[0] || null;
-      }
-      function getCurrentVoice() {
-        const chosen = byId('voice-select').value;
-        return chosen === 'auto' ? bestVoice() : state.voices.find(voice => voice.voiceURI === chosen) || bestVoice();
-      }
+      function bestVoice() { const british=state.voices.filter(voice=>/^en[-_]gb/i.test(voice.lang)); const candidates=british.length?british:state.voices.filter(voice=>/^en/i.test(voice.lang)); return [...candidates].sort((a,b)=>voiceQualityScore(b)-voiceQualityScore(a))[0]||null; }
+      function selectedVoice() { const select=byId('voice-select'); if(select.value==='auto')return bestVoice(); return state.voices.find(voice=>voice.voiceURI===select.value)||bestVoice(); }
       function refreshVoices() {
-        if (!('speechSynthesis' in window)) {
-          byId('voice-select').disabled = true;
-          byId('voice-select').innerHTML = '<option value="auto">Speech synthesis unavailable</option>';
-          return;
-        }
-        const oldChoice = byId('voice-select').value;
-        state.voices = window.speechSynthesis.getVoices();
-        const select = byId('voice-select');
-        const automatic = document.createElement('option');
-        automatic.value = 'auto'; automatic.textContent = 'Automatic — best available en-GB voice';
-        select.replaceChildren(automatic);
-        const sorted = [...state.voices].sort((a, b) => voiceQualityScore(b) - voiceQualityScore(a) || a.name.localeCompare(b.name));
-        sorted.forEach(voice => {
-          const option = document.createElement('option');
-          option.value = voice.voiceURI;
-          const quality = /enhanced|premium|natural|neural|studio/i.test(voice.name) ? ' · enhanced' : '';
-          option.textContent = `${voice.name} (${voice.lang})${quality}`;
-          select.appendChild(option);
-        });
-        const stillAvailable = [...select.options].some(option => option.value === oldChoice);
-        select.value = stillAvailable ? oldChoice : 'auto';
-        state.selectedVoice = getCurrentVoice();
-        elements.voiceLabel.textContent = state.selectedVoice ? `READY · ${state.selectedVoice.lang}` : 'NO SPEECH VOICES AVAILABLE';
+        if(!('speechSynthesis' in window)){byId('voice-select').disabled=true;byId('voice-select').innerHTML='<option value="auto">Speech synthesis unavailable</option>';elements.voiceLabel.textContent='SPEECH UNAVAILABLE';return;}
+        const previous=byId('voice-select').value; state.voices=window.speechSynthesis.getVoices();
+        if(!state.voices.length){elements.voiceLabel.textContent=state.voicesReady?'NO SPEECH VOICES AVAILABLE':'LOADING VOICES';return;}
+        state.voicesReady=true;
+        const select=byId('voice-select'); const auto=document.createElement('option'); auto.value='auto'; auto.textContent='Automatic — best available en-GB voice'; select.replaceChildren(auto);
+        [...state.voices].sort((a,b)=>voiceQualityScore(b)-voiceQualityScore(a)||a.name.localeCompare(b.name)).forEach(voice=>{const option=document.createElement('option');option.value=voice.voiceURI;const mark=/enhanced|premium|natural|neural|studio|online/i.test(voice.name)?' · natural/enhanced':'';option.textContent=`${voice.name} (${voice.lang})${mark}`;select.appendChild(option);});
+        const desired=previous!=='auto'?previous:(select.dataset.savedVoice||'auto'); select.value=[...select.options].some(option=>option.value===desired)?desired:'auto'; state.selectedVoice=selectedVoice();
+        const hasBritish=state.voices.some(voice=>/^en[-_]gb/i.test(voice.lang));
+        elements.voiceLabel.textContent=state.selectedVoice?`READY · ${state.selectedVoice.lang}`:'NO ENGLISH VOICE';
+        byId('voice-help').hidden=hasBritish;
       }
       function unlockSpeechFromGesture() {
-        if (state.speechUnlocked || !('speechSynthesis' in window) || !('SpeechSynthesisUtterance' in window)) return;
-        try {
-          // A silent, empty utterance during a user gesture helps iOS Safari/PWA
-          // unlock speech synthesis for the eventual response after its network wait.
-          const unlock = new SpeechSynthesisUtterance(' ');
-          unlock.volume = 0;
-          unlock.rate = 1;
-          unlock.onend = () => { state.speechUnlocked = true; };
-          unlock.onerror = () => {};
-          window.speechSynthesis.speak(unlock);
-          state.speechUnlocked = true;
-        } catch (_) { /* Speech is optional; text chat remains available. */ }
+        if(state.speechUnlocked||!('speechSynthesis'in window)||!('SpeechSynthesisUtterance'in window))return;
+        try { const unlock=new SpeechSynthesisUtterance(' '); unlock.volume=0; unlock.rate=1; unlock.onend=()=>{state.speechUnlocked=true;}; unlock.onerror=()=>{}; window.speechSynthesis.speak(unlock); state.speechUnlocked=true; } catch (_) {}
       }
       function splitForSpeech(text) {
-        const normalized = text.replace(/([,;:])\s*/g, '$1 ').replace(/\s+/g, ' ').trim();
-        const sentences = normalized.match(/[^.!?]+[.!?]+(?:[”’"')\]]+)?|[^.!?]+$/g) || [normalized];
-        const chunks = [];
-        let current = '';
-        for (const raw of sentences) {
-          const sentence = raw.trim();
-          if (!sentence) continue;
-          if ((current + ' ' + sentence).trim().length <= 220) { current = (current + ' ' + sentence).trim(); continue; }
-          if (current) chunks.push(current);
-          if (sentence.length <= 220) { current = sentence; continue; }
-          const clauses = sentence.split(/(?<=[,;:])\s+/);
-          current = '';
-          for (const clause of clauses) {
-            if ((current + ' ' + clause).trim().length <= 220) current = (current + ' ' + clause).trim();
-            else { if (current) chunks.push(current); current = clause.slice(0, 220); }
-          }
-        }
-        if (current) chunks.push(current);
-        return chunks;
+        const normalized=text.replace(/\s+/g,' ').trim(); const sentences=normalized.match(/[^.!?]+[.!?]+(?:[”’"')\]]+)?|[^.!?]+$/g)||[normalized]; const chunks=[]; let current='';
+        for(const raw of sentences){const sentence=raw.trim();if(!sentence)continue;if((current+' '+sentence).trim().length<=220){current=(current+' '+sentence).trim();continue;}if(current)chunks.push(current);if(sentence.length<=220){current=sentence;continue;}const clauses=sentence.split(/(?<=[,;:])\s+/);current='';for(const clause of clauses){if((current+' '+clause).trim().length<=220)current=(current+' '+clause).trim();else{if(current)chunks.push(current);current=clause.slice(0,220);}}}if(current)chunks.push(current);return chunks;
       }
-      function stopSpeech() {
-        state.speechRun++;
-        state.speechQueue = [];
-        state.speechIndex = 0;
-        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
-      }
+      function stopSpeech() { state.speechRun++;state.speechQueue=[];state.speechIndex=0;if('speechSynthesis'in window)window.speechSynthesis.cancel(); }
       function speakNext(run) {
-        if (run !== state.speechRun || state.speechIndex >= state.speechQueue.length) return;
-        const chunk = state.speechQueue[state.speechIndex++];
-        const utterance = new SpeechSynthesisUtterance(chunk);
-        const voice = state.selectedVoice || getCurrentVoice();
-        if (voice) {
-          utterance.voice = voice;
-          utterance.lang = voice.lang || 'en-GB';
-        } else utterance.lang = 'en-GB';
-        const rateControl = Number(byId('speech-speed').value);
-        const pitchControl = Number(byId('speech-pitch').value);
-        const volumeControl = Number(byId('speech-volume').value);
-        const voiceName = voice?.name.toLowerCase() || '';
-        const isEnhanced = /enhanced|premium|natural|neural|studio|high quality/i.test(voiceName);
-        const likelyFemale = /female|woman|serena|kate|samantha|victoria|moira/i.test(voiceName);
-        const rateTuning = isEnhanced ? 0 : 0.015;
-        const pitchTuning = likelyFemale ? 0.06 : voice ? 0 : 0.02;
-        utterance.rate = Math.max(0.5, Math.min(2, rateControl + rateTuning));
-        utterance.pitch = Math.max(0, Math.min(2, pitchControl + pitchTuning));
-        utterance.volume = volumeControl;
-        utterance.onend = () => { if (run === state.speechRun) setTimeout(() => speakNext(run), 140); };
-        utterance.onerror = event => {
-          if (run !== state.speechRun) return;
-          if (event.error !== 'canceled' && event.error !== 'interrupted') state.speechQueue = [];
-        };
-        try { window.speechSynthesis.speak(utterance); }
-        catch (_) { state.speechQueue = []; }
+        if(run!==state.speechRun||state.speechIndex>=state.speechQueue.length)return;
+        const utterance=new SpeechSynthesisUtterance(state.speechQueue[state.speechIndex++]); const voice=state.selectedVoice||selectedVoice();
+        if(voice){utterance.voice=voice;utterance.lang=voice.lang||'en-GB';}else utterance.lang='en-GB';
+        utterance.rate=Number(byId('speech-speed').value); utterance.pitch=Number(byId('speech-pitch').value); utterance.volume=Number(byId('speech-volume').value);
+        utterance.onend=()=>{if(run===state.speechRun)setTimeout(()=>speakNext(run),170);};
+        utterance.onerror=event=>{if(run===state.speechRun&&event.error!=='canceled'&&event.error!=='interrupted')state.speechQueue=[];};
+        try{window.speechSynthesis.resume();window.speechSynthesis.speak(utterance);}catch(_){state.speechQueue=[];}
       }
-      function speak(text) {
-        if (!byId('voice-enabled').checked || state.muted || !('speechSynthesis' in window) || !('SpeechSynthesisUtterance' in window)) return;
-        stopSpeech();
-        state.selectedVoice = getCurrentVoice();
-        state.speechQueue = splitForSpeech(text);
-        state.speechIndex = 0;
-        const run = state.speechRun;
-        if (state.speechQueue.length) speakNext(run);
-      }
+      function speak(text) { if(!byId('voice-enabled').checked||state.muted||!('speechSynthesis'in window)||!('SpeechSynthesisUtterance'in window))return;stopSpeech();state.selectedVoice=selectedVoice();state.speechQueue=splitForSpeech(text);state.speechIndex=0;if(state.speechQueue.length)speakNext(state.speechRun); }
       function testVoice() {
-        if (!('speechSynthesis' in window) || !('SpeechSynthesisUtterance' in window)) {
-          showNotice('Speech synthesis is not available in this browser.');
-          return;
-        }
-        unlockSpeechFromGesture();
-        state.muted = false;
-        byId('mute-button').textContent = '🔊';
-        byId('mute-button').setAttribute('aria-label', 'Mute spoken responses');
-        byId('mute-button').title = 'Mute spoken responses';
-        byId('voice-enabled').checked = true;
-        stopSpeech();
-        state.selectedVoice = getCurrentVoice();
-        state.speechQueue = splitForSpeech(VOICE_TEST);
-        state.speechIndex = 0;
-        speakNext(state.speechRun);
+        if(!('speechSynthesis'in window)||!('SpeechSynthesisUtterance'in window)){showNotice('Speech synthesis is not available in this browser.');return;}
+        unlockSpeechFromGesture(); if(!state.voicesReady){refreshVoices();}
+        if(!state.voices.length){showNotice('No speech voices are available yet. Wait a moment and try again.');return;}
+        state.muted=false;byId('mute-button').textContent='🔊';byId('mute-button').setAttribute('aria-label','Mute spoken responses');byId('mute-button').title='Mute spoken responses';byId('voice-enabled').checked=true;saveSettings();
+        stopSpeech();state.selectedVoice=selectedVoice();state.speechQueue=splitForSpeech(VOICE_TEST);state.speechIndex=0;speakNext(state.speechRun);
       }
-      function playSound() {
-        if (!byId('sound-enabled').checked) return;
-        try {
-          const audio = new (window.AudioContext || window.webkitAudioContext)();
-          const oscillator = audio.createOscillator();
-          const gain = audio.createGain();
-          oscillator.type = 'sine'; oscillator.frequency.value = 660;
-          gain.gain.setValueAtTime(0.035, audio.currentTime);
-          gain.gain.exponentialRampToValueAtTime(0.001, audio.currentTime + 0.12);
-          oscillator.connect(gain); gain.connect(audio.destination); oscillator.start(); oscillator.stop(audio.currentTime + 0.12);
-          oscillator.onended = () => audio.close();
-        } catch (_) { /* Audio is optional; chat remains available. */ }
-      }
-      function setBusy(busy) {
-        state.busy = busy;
-        elements.send.disabled = busy;
-        elements.send.textContent = busy ? 'WAIT…' : 'SEND';
-        elements.input.setAttribute('aria-busy', String(busy));
-        if (busy) setStatus('CHANNEL ACTIVE', 'busy');
-      }
-      async function sendMessage(message) {
-        if (state.busy) return;
-        const text = (message ?? elements.input.value).trim();
-        if (!text) { showNotice('Please enter a message first.'); return; }
-        unlockSpeechFromGesture();
-        if (!message) elements.input.value = '';
-        elements.input.style.height = 'auto';
-        addBubble('user', text);
-        state.conversation.push({ role: 'user', content: text });
-        switchTab('chat');
-        const typing = document.createElement('div');
-        typing.className = 'bubble assistant';
-        typing.setAttribute('aria-label', 'JARVIS is typing');
-        typing.innerHTML = '<div class="who">J.A.R.V.I.S.</div><div class="typing"><i></i><i></i><i></i></div>';
-        elements.log.appendChild(typing);
-        scrollToLatest();
-        setBusy(true);
-        const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 45000);
-        try {
-          const response = await fetch(WORKER_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: text }),
-            signal: controller.signal
-          });
-          let payload;
-          try { payload = await response.json(); } catch (_) { throw new Error('The assistant returned an unreadable response. Please try again.'); }
-          if (!response.ok) {
-            const serverMessage = typeof payload?.error === 'string' ? payload.error : `The assistant service returned an error (${response.status}).`;
-            throw new Error(serverMessage);
-          }
-          if (!payload || typeof payload.reply !== 'string' || !payload.reply.trim()) throw new Error('The assistant response was missing its reply. Please try again.');
-          const reply = payload.reply.trim();
-          typing.remove();
-          addBubble('assistant', reply);
-          state.conversation.push({ role: 'assistant', content: reply });
-          setStatus('SYSTEM READY');
-          playSound();
-          speak(reply);
-        } catch (error) {
-          typing.remove();
-          const messageText = error.name === 'AbortError' ? 'JARVIS took too long to respond. Please try again.' : error instanceof TypeError ? 'Unable to reach JARVIS. Check your connection and try again.' : error.message || 'Something went wrong while contacting JARVIS. Please try again.';
-          addBubble('assistant', messageText, 'error');
-          setStatus('CHANNEL UNAVAILABLE', 'error');
-          showNotice(messageText);
-        } finally {
-          clearTimeout(timeout);
-          setBusy(false);
-          elements.input.focus({ preventScroll: true });
-        }
-      }
-      function clearConversation() {
-        if (state.busy) { showNotice('Please wait for the current response to finish.'); return; }
-        state.conversation.length = 0;
-        elements.log.replaceChildren();
-        const empty = document.createElement('div');
-        empty.className = 'empty-state'; empty.id = 'empty-state';
-        empty.innerHTML = '<div class="atom" aria-hidden="true">◉</div>Your conversation will appear here.<br>Send a message to begin.';
-        elements.log.appendChild(empty);
-        switchTab('chat');
-        showNotice('Conversation cleared.');
-      }
-      function setupRecognition() {
-        const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        const supportText = Recognition ? 'AVAILABLE' : 'NOT SUPPORTED IN THIS BROWSER';
-        byId('recognition-setting').textContent = supportText;
-        elements.voiceLabel.textContent = supportText;
-        if (!Recognition) {
-          elements.mic.disabled = true;
-          elements.mic.title = 'Speech recognition is not supported in this browser';
-          elements.mic.setAttribute('aria-label', 'Speech recognition is not supported');
-          elements.mic.style.opacity = '.45';
-          return;
-        }
-        const recognition = new Recognition();
-        state.recognition = recognition;
-        recognition.lang = 'en-GB'; recognition.interimResults = true; recognition.continuous = false;
-        recognition.onstart = () => { state.listening = true; elements.mic.classList.add('listening'); elements.mic.textContent = '●'; elements.mic.title = 'Listening… tap to stop'; elements.mic.setAttribute('aria-label', 'Stop voice input; listening'); showNotice('Listening…'); };
-        recognition.onresult = event => {
-          let transcript = '';
-          for (let i = event.resultIndex; i < event.results.length; i++) transcript += event.results[i][0].transcript;
-          elements.input.value = transcript;
-          resizeInput();
-          if (event.results[event.results.length - 1].isFinal && transcript.trim()) sendMessage(transcript);
-        };
-        recognition.onerror = event => { if (event.error !== 'no-speech' && event.error !== 'aborted') showNotice(event.error === 'not-allowed' ? 'Microphone access was denied.' : 'Voice input is temporarily unavailable.'); };
-        recognition.onend = () => { state.listening = false; elements.mic.classList.remove('listening'); elements.mic.textContent = '🎙'; elements.mic.title = 'Start voice input'; elements.mic.setAttribute('aria-label', 'Start voice input'); };
-        elements.mic.addEventListener('click', () => {
-          if (state.listening) recognition.stop();
-          else { try { unlockSpeechFromGesture(); switchTab('chat'); recognition.start(); } catch (_) { showNotice('Voice input could not start. Please try again.'); } }
-        });
-      }
-      function updateRangeOutput(inputId, outputId, formatter) { byId(outputId).value = formatter(Number(byId(inputId).value)); }
-      function resizeInput() { elements.input.style.height = 'auto'; elements.input.style.height = `${Math.min(elements.input.scrollHeight, 150)}px`; }
-
-      document.querySelectorAll('[data-tab]').forEach(button => button.addEventListener('click', () => switchTab(button.dataset.tab)));
-      byId('composer').addEventListener('submit', event => { event.preventDefault(); sendMessage(); });
-      elements.input.addEventListener('keydown', event => { if (event.key === 'Enter' && !event.shiftKey && !event.isComposing) { event.preventDefault(); byId('composer').requestSubmit(); } });
-      elements.input.addEventListener('input', resizeInput);
-      byId('mute-button').addEventListener('click', event => {
-        state.muted = !state.muted;
-        if (state.muted) stopSpeech();
-        else unlockSpeechFromGesture();
-        event.currentTarget.textContent = state.muted ? '🔇' : '🔊';
-        event.currentTarget.setAttribute('aria-label', state.muted ? 'Unmute spoken responses' : 'Mute spoken responses');
-        event.currentTarget.title = state.muted ? 'Unmute spoken responses' : 'Mute spoken responses';
-      });
-      byId('test-voice').addEventListener('click', testVoice);
-      byId('voice-select').addEventListener('change', () => { state.selectedVoice = getCurrentVoice(); if (state.selectedVoice) elements.voiceLabel.textContent = `READY · ${state.selectedVoice.lang}`; });
-      byId('speech-speed').addEventListener('input', () => updateRangeOutput('speech-speed', 'speech-speed-value', value => `${value.toFixed(2)}×`));
-      byId('speech-pitch').addEventListener('input', () => updateRangeOutput('speech-pitch', 'speech-pitch-value', value => value.toFixed(2)));
-      byId('speech-volume').addEventListener('input', () => updateRangeOutput('speech-volume', 'speech-volume-value', value => `${Math.round(value * 100)}%`));
-      byId('theme-select').addEventListener('change', event => { document.body.dataset.theme = event.target.value === 'classic' ? '' : event.target.value; });
-      byId('clear-button').addEventListener('click', clearConversation);
-      updateClock(); setInterval(updateClock, 1000); setupRecognition();
-      if ('speechSynthesis' in window) {
-        refreshVoices();
-        window.speechSynthesis.addEventListener?.('voiceschanged', refreshVoices);
-        window.addEventListener('pageshow', refreshVoices);
-        // Some Safari versions expose voices only after a short delay or gesture.
-        setTimeout(refreshVoices, 250);
-        setTimeout(refreshVoices, 1200);
-      } else refreshVoices();
-      if ('serviceWorker' in navigator && location.protocol !== 'file:') navigator.serviceWorker.register('./service-worker.js').catch(() => { /* The app remains usable when offline installation is unavailable. */ });
+      function playSound(){if(!byId('sound-enabled').checked)return;try{const audio=new(window.AudioContext||window.webkitAudioContext)();const oscillator=audio.createOscillator();const gain=audio.createGain();oscillator.type='sine';oscillator.frequency.value=660;gain.gain.setValueAtTime(.035,audio.currentTime);gain.gain.exponentialRampToValueAtTime(.001,audio.currentTime+.12);oscillator.connect(gain);gain.connect(audio.destination);oscillator.start();oscillator.stop(audio.currentTime+.12);oscillator.onended=()=>audio.close();}catch(_){}}
+      function setBusy(busy){state.busy=busy;elements.send.disabled=busy;elements.send.textContent=busy?'WAIT…':'SEND';elements.input.setAttribute('aria-busy',String(busy));if(busy)setStatus('CHANNEL ACTIVE','busy');}
+      async function sendMessage(message){if(state.busy)return;const text=(message??elements.input.value).trim();if(!text){showNotice('Please enter a message first.');return;}unlockSpeechFromGesture();if(!message)elements.input.value='';elements.input.style.height='auto';addBubble('user',text);state.conversation.push({role:'user',content:text});switchTab('chat');const typing=document.createElement('div');typing.className='bubble assistant';typing.setAttribute('aria-label','JARVIS is typing');typing.innerHTML='<div class="who">J.A.R.V.I.S.</div><div class="typing"><i></i><i></i><i></i></div>';elements.log.appendChild(typing);scrollToLatest();setBusy(true);const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),45000);
+        try{const response=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:text}),signal:controller.signal});let payload;try{payload=await response.json();}catch(_){throw new Error('The assistant returned an unreadable response. Please try again.');}if(!response.ok)throw new Error(typeof payload?.error==='string'?payload.error:`The assistant service returned an error (${response.status}).`);if(!payload||typeof payload.reply!=='string'||!payload.reply.trim())throw new Error('The assistant response was missing its reply. Please try again.');const reply=payload.reply.trim();typing.remove();addBubble('assistant',reply);state.conversation.push({role:'assistant',content:reply});setStatus('SYSTEM READY');playSound();speak(reply);
+        }catch(error){typing.remove();const messageText=error.name==='AbortError'?'JARVIS took too long to respond. Please try again.':error instanceof TypeError?'Unable to reach JARVIS. Check your connection and try again.':error.message||'Something went wrong while contacting JARVIS. Please try again.';addBubble('assistant',messageText,'error');setStatus('CHANNEL UNAVAILABLE','error');showNotice(messageText);}finally{clearTimeout(timeout);setBusy(false);elements.input.focus({preventScroll:true});}}
+      function clearConversation(){if(state.busy){showNotice('Please wait for the current response to finish.');return;}state.conversation.length=0;elements.log.replaceChildren();const empty=document.createElement('div');empty.className='empty-state';empty.id='empty-state';empty.innerHTML='<div class="atom" aria-hidden="true">◉</div>Your conversation will appear here.<br>Send a message to begin.';elements.log.appendChild(empty);switchTab('chat');showNotice('Conversation cleared.');}
+      function setupRecognition(){const Recognition=window.SpeechRecognition||window.webkitSpeechRecognition;const support=Recognition?'AVAILABLE':'NOT SUPPORTED IN THIS BROWSER';byId('recognition-setting').textContent=support;elements.voiceLabel.textContent=support;if(!Recognition){elements.mic.disabled=true;elements.mic.title='Speech recognition is not supported in this browser';elements.mic.setAttribute('aria-label','Speech recognition is not supported');elements.mic.style.opacity='.45';return;}const recognition=new Recognition();state.recognition=recognition;recognition.lang='en-GB';recognition.interimResults=true;recognition.continuous=false;recognition.onstart=()=>{state.listening=true;elements.mic.classList.add('listening');elements.mic.textContent='●';elements.mic.title='Listening… tap to stop';elements.mic.setAttribute('aria-label','Stop voice input; listening');showNotice('Listening…');};recognition.onresult=event=>{let transcript='';for(let i=event.resultIndex;i<event.results.length;i++)transcript+=event.results[i][0].transcript;elements.input.value=transcript;resizeInput();if(event.results[event.results.length-1].isFinal&&transcript.trim())sendMessage(transcript);};recognition.onerror=event=>{if(event.error!=='no-speech'&&event.error!=='aborted')showNotice(event.error==='not-allowed'?'Microphone access was denied.':'Voice input is temporarily unavailable.');};recognition.onend=()=>{state.listening=false;elements.mic.classList.remove('listening');elements.mic.textContent='🎙';elements.mic.title='Start voice input';elements.mic.setAttribute('aria-label','Start voice input');};elements.mic.addEventListener('click',()=>{if(state.listening)recognition.stop();else try{unlockSpeechFromGesture();switchTab('chat');recognition.start();}catch(_){showNotice('Voice input could not start. Please try again.');}});}
+      function updateRangeOutputs(){byId('speech-speed-value').value=`${Number(byId('speech-speed').value).toFixed(2)}×`;byId('speech-pitch-value').value=Number(byId('speech-pitch').value).toFixed(2);byId('speech-volume-value').value=`${Math.round(Number(byId('speech-volume').value)*100)}%`;}
+      function resizeInput(){elements.input.style.height='auto';elements.input.style.height=`${Math.min(elements.input.scrollHeight,150)}px`;}
+      loadSettings();document.querySelectorAll('[data-tab]').forEach(button=>button.addEventListener('click',()=>switchTab(button.dataset.tab)));byId('composer').addEventListener('submit',event=>{event.preventDefault();sendMessage();});elements.input.addEventListener('keydown',event=>{if(event.key==='Enter'&&!event.shiftKey&&!event.isComposing){event.preventDefault();byId('composer').requestSubmit();}});elements.input.addEventListener('input',resizeInput);
+      byId('mute-button').addEventListener('click',event=>{state.muted=!state.muted;if(state.muted)stopSpeech();else unlockSpeechFromGesture();event.currentTarget.textContent=state.muted?'🔇':'🔊';event.currentTarget.setAttribute('aria-label',state.muted?'Unmute spoken responses':'Mute spoken responses');event.currentTarget.title=state.muted?'Unmute spoken responses':'Mute spoken responses';});
+      byId('test-voice').addEventListener('click',testVoice);byId('voice-select').addEventListener('change',()=>{state.selectedVoice=selectedVoice();saveSettings();if(state.selectedVoice)elements.voiceLabel.textContent=`READY · ${state.selectedVoice.lang}`;});
+      ['voice-enabled','speech-speed','speech-pitch','speech-volume','sound-enabled','theme-select'].forEach(id=>byId(id).addEventListener('change',()=>{updateRangeOutputs();saveSettings();}));['speech-speed','speech-pitch','speech-volume'].forEach(id=>byId(id).addEventListener('input',()=>{updateRangeOutputs();saveSettings();}));byId('theme-select').addEventListener('change',event=>{document.body.dataset.theme=event.target.value==='classic'?'':event.target.value;});byId('clear-button').addEventListener('click',clearConversation);
+      updateClock();setInterval(updateClock,1000);setupRecognition();
+      if('speechSynthesis'in window){window.speechSynthesis.addEventListener?.('voiceschanged',()=>{state.voicesReady=true;refreshVoices();});window.addEventListener('pageshow',()=>{if(state.voicesReady)refreshVoices();});const initialVoices=window.speechSynthesis.getVoices();if(initialVoices.length){state.voices=initialVoices;setTimeout(()=>{if(!state.voicesReady){state.voicesReady=true;refreshVoices();}},600);}else setTimeout(()=>{if(!state.voicesReady){state.voices=window.speechSynthesis.getVoices();if(state.voices.length){state.voicesReady=true;refreshVoices();}}},1800);}
+      if('serviceWorker'in navigator&&location.protocol!=='file:')navigator.serviceWorker.register('./service-worker.js').catch(()=>{});
     })();
   </script>
 </body>
