@@ -3,168 +3,334 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#050b14">
-<title>J.A.R.V.I.S. | STARK SYSTEMS</title>
+<title>J.A.R.V.I.S. | STARK INDUSTRIES</title>
 
 <style>
 *{box-sizing:border-box}
 body{
- margin:0;background:#050b14;color:#d9f6ff;
- font-family:Arial,Helvetica,sans-serif;
+ margin:0;
  min-height:100vh;
- background-image:radial-gradient(ellipse at center,#10283b 0%,#050b14 70%);
+ background:radial-gradient(ellipse at center,#102a40,#050b14 75%);
+ color:#d8f5ff;
+ font-family:Arial,Helvetica,sans-serif;
 }
 header{
- padding:22px 16px;text-align:center;
- border-bottom:1px solid #1b718d;
- letter-spacing:4px;
+ text-align:center;
+ padding:25px 12px 18px;
+ border-bottom:1px solid #17617c;
 }
-header h1{margin:0;color:#7ceaff;font-size:25px}
-header p{font-size:10px;letter-spacing:3px;color:#6496aa}
-main{max-width:850px;margin:auto;padding:18px}
+header h1{
+ margin:0;color:#7ceaff;
+ font-size:29px;letter-spacing:5px;
+ text-shadow:0 0 15px #168db8;
+}
+header p{
+ color:#6797aa;font-size:10px;letter-spacing:3px;
+}
+main{max-width:850px;margin:auto;padding:16px}
 .panel{
- border:1px solid #17617b;
- background:rgba(5,20,32,.88);
- border-radius:12px;padding:18px;margin-bottom:16px;
- box-shadow:0 0 18px #092e43;
+ background:rgba(5,20,32,.92);
+ border:1px solid #17617c;
+ border-radius:12px;
+ padding:18px;
+ margin-bottom:16px;
+ box-shadow:0 0 18px rgba(0,160,220,.10);
 }
-.section-title{
- color:#6de5ff;font-size:12px;letter-spacing:3px;
+.heading{
+ color:#71e5ff;
+ font-size:12px;
+ letter-spacing:3px;
  margin-bottom:15px;
 }
-.orb-wrap{display:flex;justify-content:center;padding:18px}
+.orb-wrap{display:flex;justify-content:center;padding:15px}
 .orb{
- width:145px;height:145px;border-radius:50%;
- border:2px solid #65dfff;
- background:radial-gradient(circle,#8ceeff 0%,#14718e 18%,#061523 65%);
- box-shadow:0 0 25px #20bce8, inset 0 0 25px #24bce8;
+ width:135px;height:135px;border-radius:50%;
+ border:2px solid #68ddff;
+ background:radial-gradient(circle,#d4fbff 0%,#36c9ec 8%,#126487 28%,#061523 70%);
+ box-shadow:0 0 28px #159cc9,inset 0 0 25px #159cc9;
  animation:pulse 3s infinite;
 }
 @keyframes pulse{
- 50%{box-shadow:0 0 45px #20bce8,inset 0 0 35px #24bce8}
+ 50%{box-shadow:0 0 48px #1ab9e8,inset 0 0 35px #159cc9}
 }
 #status{
- text-align:center;color:#78dff7;
- font-size:12px;letter-spacing:2px;min-height:22px;
+ text-align:center;
+ min-height:20px;
+ color:#80e7ff;
+ font-size:12px;
+ letter-spacing:2px;
 }
-.controls{display:flex;gap:10px;flex-wrap:wrap}
+.controls{
+ display:grid;
+ grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:10px;
+}
 button{
- flex:1;min-width:120px;padding:15px 10px;
- border:1px solid #38bfe5;border-radius:7px;
- background:#09283a;color:#9beeff;
- font-weight:bold;letter-spacing:1px;
+ border:1px solid #38bfe5;
+ border-radius:7px;
+ background:#09283a;
+ color:#a1edff;
+ padding:15px 8px;
+ font-size:12px;
+ font-weight:bold;
+ letter-spacing:1px;
  cursor:pointer;
+ touch-action:manipulation;
 }
 button:active{background:#14516a}
-button.active{background:#075b50;border-color:#39e8b1;color:#aaffdf}
-button.danger{border-color:#a94b55;color:#ff9b9b}
-input{
- width:100%;padding:15px;background:#071522;
- color:white;border:1px solid #23647d;border-radius:7px;
- font-size:16px;outline:none;
+button.active{
+ background:#075b50;
+ border-color:#39e8b1;
+ color:#b2ffe0;
 }
+button.danger{border-color:#ad5360;color:#ffaaaa}
 .chat{
- height:260px;overflow-y:auto;
- border:1px solid #153d50;background:#030b12;
- border-radius:7px;padding:12px;margin-bottom:12px;
+ height:290px;
+ overflow-y:auto;
+ border:1px solid #153d50;
+ background:#030b12;
+ border-radius:8px;
+ padding:13px;
+ margin-bottom:12px;
 }
-.message{margin:0 0 14px;line-height:1.5;white-space:pre-wrap}
+.message{
+ margin:0 0 15px;
+ line-height:1.5;
+ white-space:pre-wrap;
+ overflow-wrap:anywhere;
+}
 .you{color:#75dfff}
 .jarvis{color:#a5f4ce}
-.system{color:#819aaa;font-size:12px}
+.system{color:#8caaba;font-size:12px}
 .row{display:flex;gap:8px}
-.row input{flex:1;min-width:0}
-.row button{flex:0 0 90px}
-.info{font-size:12px;color:#7799a9;line-height:1.6}
-footer{text-align:center;color:#476b7b;font-size:10px;padding:20px;letter-spacing:2px}
+input{
+ flex:1;min-width:0;
+ background:#071522;
+ border:1px solid #23647d;
+ border-radius:7px;
+ padding:14px;
+ color:white;
+ font-size:16px;
+ outline:none;
+}
+.row button{width:85px}
+.info{
+ color:#789cac;
+ font-size:12px;
+ line-height:1.7;
+}
+.info span{color:#a9eaff}
+footer{
+ text-align:center;
+ padding:20px;
+ color:#476b7b;
+ font-size:10px;
+ letter-spacing:2px;
+}
+@media(max-width:380px){
+ header h1{font-size:24px}
+ main{padding:10px}
+ .panel{padding:14px}
+}
 </style>
 </head>
 
 <body>
+
 <header>
  <h1>J.A.R.V.I.S.</h1>
  <p>STARK INDUSTRIES • PERSONAL AI SYSTEM</p>
 </header>
 
 <main>
- <section class="panel">
-  <div class="section-title">SYSTEM INTERFACE</div>
-  <div class="orb-wrap"><div class="orb"></div></div>
-  <div id="status">SYSTEM ONLINE</div>
- </section>
 
- <section class="panel">
-  <div class="section-title">VOICE CONTROL</div>
-  <div class="controls">
-   <button id="handsfree">HANDS-FREE: OFF</button>
-   <button id="mute">VOICE: ON</button>
-  </div>
-  <p class="info">
-   Activate hands-free, then say “Hey JARVIS”.
-   Continue speaking naturally after JARVIS responds.
-   Keep this page open and active.
-  </p>
- </section>
+<section class="panel">
+ <div class="heading">SYSTEM INTERFACE</div>
+ <div class="orb-wrap"><div class="orb"></div></div>
+ <div id="status">SYSTEM ONLINE</div>
+</section>
 
- <section class="panel">
-  <div class="section-title">CONVERSATION</div>
-  <div class="chat" id="chat">
-   <p class="message jarvis"><b>JARVIS:</b> Good day. All systems are online. How may I assist you?</p>
-  </div>
-  <div class="row">
-   <input id="message" placeholder="Message JARVIS..." autocomplete="off">
-   <button id="send">SEND</button>
-  </div>
- </section>
+<section class="panel">
+ <div class="heading">VOICE CONTROL</div>
 
- <section class="panel">
-  <div class="section-title">DEVICE STATUS</div>
-  <p class="info">AI CONNECTION: <span id="connection">READY</span></p>
-  <p class="info">VOICE ENGINE: <span id="voiceStatus">STANDBY</span></p>
-  <p class="info">COMPUTER TELEMETRY: AVAILABLE ON WINDOWS DASHBOARD</p>
- </section>
+ <div class="controls">
+  <button id="handsfree">HANDS-FREE: OFF</button>
+  <button id="testVoice">TEST VOICE</button>
+  <button id="mute">VOICE: ON</button>
+  <button id="clearChat">CLEAR CHAT</button>
+ </div>
+
+ <p class="info">
+  Tap HANDS-FREE and say "Hey JARVIS".
+  After he responds, continue speaking without repeating his name.
+  Keep Safari open and the screen active.
+ </p>
+</section>
+
+<section class="panel">
+ <div class="heading">CONVERSATION</div>
+
+ <div class="chat" id="chat">
+  <p class="message jarvis"><b>JARVIS:</b> Good day. All systems are online. How may I assist you?</p>
+ </div>
+
+ <div class="row">
+  <input id="message" placeholder="Message JARVIS..." autocomplete="off">
+  <button id="send">SEND</button>
+ </div>
+</section>
+
+<section class="panel">
+ <div class="heading">SYSTEM DIAGNOSTICS</div>
+ <p class="info">AI CONNECTION: <span id="connection">READY</span></p>
+ <p class="info">VOICE ENGINE: <span id="voiceStatus">STANDBY</span></p>
+ <p class="info">MICROPHONE: <span id="micStatus">STANDBY</span></p>
+ <p class="info">PLATFORM: <span>IPHONE WEB DASHBOARD</span></p>
+</section>
+
 </main>
 
 <footer>STARK INDUSTRIES • J.A.R.V.I.S. SYSTEMS</footer>
 
 <script>
+"use strict";
+
+/* JARVIS CLOUD AI */
 const API = "https://jarvis-ai.seblpoulsen.workers.dev/";
 
+/* ELEMENTS */
 const chat = document.getElementById("chat");
 const input = document.getElementById("message");
-const statusText = document.getElementById("status");
-const handsfreeButton = document.getElementById("handsfree");
-const muteButton = document.getElementById("mute");
-const voiceStatus = document.getElementById("voiceStatus");
-const connection = document.getElementById("connection");
+const statusDisplay = document.getElementById("status");
+const connectionDisplay = document.getElementById("connection");
+const voiceDisplay = document.getElementById("voiceStatus");
+const micDisplay = document.getElementById("micStatus");
 
+const handsfreeButton = document.getElementById("handsfree");
+const testVoiceButton = document.getElementById("testVoice");
+const muteButton = document.getElementById("mute");
+
+/* STATE */
 let handsFree = false;
 let muted = false;
 let conversationActive = false;
 let processing = false;
-let speakingNow = false;
+let speaking = false;
 let recognition = null;
 let restartTimer = null;
-let sessionNumber = 0;
+let session = 0;
 
-function status(text){
- statusText.textContent = text;
+/* STATUS */
+function setStatus(value){
+ statusDisplay.textContent = value;
 }
 
-function addMessage(who, text, type){
+/* CHAT */
+function addMessage(name,text,type){
  const p = document.createElement("p");
  p.className = "message " + type;
- const label = document.createElement("b");
- label.textContent = who + ": ";
- p.appendChild(label);
+
+ const b = document.createElement("b");
+ b.textContent = name + ": ";
+
+ p.appendChild(b);
  p.appendChild(document.createTextNode(text));
+
  chat.appendChild(p);
  chat.scrollTop = chat.scrollHeight;
 }
 
-function stopRecognition(){
- sessionNumber++;
+/* SPEECH ENGINE */
+function getBritishVoice(){
+ if(!window.speechSynthesis) return null;
+
+ const voices = window.speechSynthesis.getVoices();
+
+ return voices.find(v =>
+  v.lang && v.lang.toLowerCase() === "en-gb" &&
+  /daniel|oliver|arthur|google uk english male/i.test(v.name)
+ ) || voices.find(v =>
+  v.lang && v.lang.toLowerCase() === "en-gb"
+ ) || null;
+}
+
+/* Prime speech from a real user tap */
+function unlockSpeech(){
+ if(!window.speechSynthesis ||
+    !window.SpeechSynthesisUtterance) return;
+
+ try{
+  const prime = new SpeechSynthesisUtterance(" ");
+  prime.volume = 0;
+  window.speechSynthesis.speak(prime);
+ }catch(e){}
+}
+
+/* SPEAK JARVIS REPLY */
+function speak(text){
+ return new Promise(resolve=>{
+  if(muted || !window.speechSynthesis ||
+     !window.SpeechSynthesisUtterance){
+   resolve();
+   return;
+  }
+
+  const synth = window.speechSynthesis;
+
+  speaking = true;
+  synth.cancel();
+
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = "en-GB";
+  utterance.rate = 0.91;
+  utterance.pitch = 0.88;
+  utterance.volume = 1;
+
+  const voice = getBritishVoice();
+  if(voice) utterance.voice = voice;
+
+  let finished = false;
+  let timeout;
+
+  function finish(){
+   if(finished) return;
+   finished = true;
+   clearTimeout(timeout);
+   speaking = false;
+   voiceDisplay.textContent = "READY";
+   resolve();
+  }
+
+  utterance.onstart = ()=>{
+   voiceDisplay.textContent = "SPEAKING";
+   setStatus("JARVIS IS SPEAKING");
+  };
+
+  utterance.onend = finish;
+
+  utterance.onerror = event=>{
+   console.log("Speech error:",event.error);
+   voiceDisplay.textContent = "SPEECH ERROR";
+   finish();
+  };
+
+  timeout = setTimeout(finish,Math.max(15000,text.length*180));
+
+  try{
+   synth.resume();
+   synth.speak(utterance);
+  }catch(error){
+   console.log(error);
+   finish();
+  }
+ });
+}
+
+/* MICROPHONE CONTROL */
+function stopListening(){
+ session++;
  clearTimeout(restartTimer);
  restartTimer = null;
 
@@ -172,81 +338,168 @@ function stopRecognition(){
   const old = recognition;
   recognition = null;
   old.onend = null;
+
   try{old.abort()}catch(e){}
  }
- voiceStatus.textContent = "STANDBY";
+
+ micDisplay.textContent = "STANDBY";
 }
 
-function scheduleListening(delay){
+/* RESTART LISTENING */
+function scheduleListening(delay=1000){
  clearTimeout(restartTimer);
 
- if(!handsFree || processing || speakingNow) return;
+ if(!handsFree || processing || speaking) return;
 
- const expected = sessionNumber;
+ const expectedSession = session;
 
  restartTimer = setTimeout(()=>{
-  if(!handsFree || processing || speakingNow) return;
-  if(expected !== sessionNumber || recognition) return;
-  startRecognition();
- }, delay);
+  if(!handsFree || processing || speaking) return;
+  if(expectedSession !== session || recognition) return;
+
+  startListening();
+ },delay);
 }
 
-function speak(text){
- return new Promise(resolve=>{
-  if(muted || !("speechSynthesis" in window)){
-   resolve();
+/* PROCESS VOICE INPUT */
+function handleVoice(text){
+ text = text.trim();
+
+ if(!text || processing) return;
+
+ addMessage("VOICE HEARD",text,"system");
+
+ if(!conversationActive){
+  const match = text.match(
+   /\b(?:hey\s+)?jarvis\b[,.\s!]*(.*)$/i
+  );
+
+  if(!match){
+   setStatus("WAITING FOR HEY JARVIS");
    return;
   }
 
-  speakingNow = true;
-  window.speechSynthesis.cancel();
+  conversationActive = true;
 
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = "en-GB";
-  utterance.rate = 0.94;
-  utterance.pitch = 0.95;
+  const command = match[1].trim();
 
-  const voices = window.speechSynthesis.getVoices();
-  const british = voices.find(v =>
-   v.lang && v.lang.toLowerCase().startsWith("en-gb")
-  );
-  if(british) utterance.voice = british;
-
-  let finished = false;
-  let failsafe;
-
-  function finish(){
-   if(finished) return;
-   finished = true;
-   clearTimeout(failsafe);
-   speakingNow = false;
-   resolve();
-  }
-
-  utterance.onend = finish;
-  utterance.onerror = finish;
-
-  failsafe = setTimeout(finish, Math.max(12000,text.length*130));
-
-  try{
-   window.speechSynthesis.speak(utterance);
-  }catch(e){
-   finish();
-  }
- });
+  sendMessage(command || "Hello JARVIS.");
+ }else{
+  sendMessage(text);
+ }
 }
 
+/* START SPEECH RECOGNITION */
+function startListening(){
+ if(!handsFree || processing || speaking || recognition) return;
+
+ const SpeechRecognition =
+  window.SpeechRecognition ||
+  window.webkitSpeechRecognition;
+
+ if(!SpeechRecognition){
+  handsFree = false;
+  updateButtons();
+
+  micDisplay.textContent = "UNAVAILABLE";
+  setStatus("SPEECH RECOGNITION NOT SUPPORTED");
+
+  addMessage(
+   "SYSTEM",
+   "Speech recognition is not available in this browser. Text chat is still available.",
+   "system"
+  );
+  return;
+ }
+
+ const instance = new SpeechRecognition();
+ recognition = instance;
+
+ instance.lang = "en-GB";
+ instance.continuous = false;
+ instance.interimResults = false;
+ instance.maxAlternatives = 1;
+
+ instance.onstart = ()=>{
+  if(recognition !== instance) return;
+
+  micDisplay.textContent = "LISTENING";
+  setStatus(
+   conversationActive ?
+   "LISTENING FOR YOUR COMMAND" :
+   "SAY HEY JARVIS"
+  );
+ };
+
+ instance.onresult = event=>{
+  if(recognition !== instance) return;
+
+  const result = event.results[0][0].transcript;
+  handleVoice(result);
+ };
+
+ instance.onerror = event=>{
+  if(recognition !== instance) return;
+
+  micDisplay.textContent = "ERROR";
+  console.log("Microphone error:",event.error);
+
+  if(event.error === "not-allowed" ||
+     event.error === "service-not-allowed"){
+
+   handsFree = false;
+   conversationActive = false;
+   updateButtons();
+
+   setStatus("MICROPHONE PERMISSION DENIED");
+
+   addMessage(
+    "SYSTEM",
+    "Please allow microphone access for Safari in iPhone Settings.",
+    "system"
+   );
+
+  }else if(event.error === "audio-capture"){
+
+   addMessage("SYSTEM","No microphone was detected.","system");
+
+  }else if(event.error === "network"){
+
+   addMessage("SYSTEM","Speech recognition network error.","system");
+  }
+ };
+
+ instance.onend = ()=>{
+  if(recognition === instance) recognition = null;
+
+  if(handsFree && !processing && !speaking){
+   micDisplay.textContent = "RESTARTING";
+   scheduleListening(1000);
+  }
+ };
+
+ try{
+  instance.start();
+ }catch(error){
+  if(recognition === instance) recognition = null;
+  scheduleListening(1800);
+ }
+}
+
+/* SEND MESSAGE TO CLOUD AI */
 async function sendMessage(message){
  message = message.trim();
+
  if(!message || processing) return;
 
  processing = true;
- stopRecognition();
+ stopListening();
 
  addMessage("YOU",message,"you");
+
  input.value = "";
- status("PROCESSING REQUEST...");
- connection.textContent = "CONNECTING";
+ setStatus("CONTACTING JARVIS...");
+ connectionDisplay.textContent = "CONNECTING";
 
  try{
   const response = await fetch(API,{
@@ -255,184 +508,197 @@ async function sendMessage(message){
    body:JSON.stringify({message:message})
   });
 
-  if(!response.ok) throw new Error("Server returned HTTP " + response.status);
+  if(!response.ok){
+   throw new Error("HTTP " + response.status);
+  }
 
   const data = await response.json();
-  const reply = data.reply || data.response || "I could not generate a response.";
 
-  connection.textContent = "CONNECTED";
+  const reply =
+   data.reply ||
+   data.response ||
+   "I am unable to provide a response.";
+
+  connectionDisplay.textContent = "CONNECTED";
+
   addMessage("JARVIS",reply,"jarvis");
 
-  status("JARVIS RESPONDING...");
   await speak(reply);
 
  }catch(error){
-  connection.textContent = "ERROR";
-  addMessage("SYSTEM","I cannot connect to the JARVIS server. Please check your internet connection.","system");
-  status("CONNECTION ERROR");
+  console.error("JARVIS API error:",error);
+
+  connectionDisplay.textContent = "ERROR";
+
+  addMessage(
+   "SYSTEM",
+   "I cannot connect to the JARVIS server. Please check your internet connection.",
+   "system"
+  );
+
+  setStatus("CONNECTION ERROR");
+
  }finally{
   processing = false;
 
   if(handsFree){
-   status("READY FOR YOUR NEXT COMMAND");
-   scheduleListening(1400);
+   setStatus("READY FOR YOUR NEXT COMMAND");
+   scheduleListening(1300);
   }else{
-   status("SYSTEM ONLINE");
+   setStatus("SYSTEM ONLINE");
   }
  }
 }
 
-function handleTranscript(transcript){
- transcript = transcript.trim();
- if(!transcript || processing) return;
-
- addMessage("VOICE HEARD",transcript,"system");
-
- if(!conversationActive){
-  const match = transcript.match(/\b(?:hey\s+)?jarvis\b[,.\s!]*(.*)$/i);
-
-  if(!match){
-   status("WAITING FOR HEY JARVIS");
-   return;
-  }
-
-  conversationActive = true;
-  const command = match[1].trim();
-
-  if(command){
-   sendMessage(command);
-  }else{
-   sendMessage("Hello JARVIS.");
-  }
- }else{
-  sendMessage(transcript);
- }
-}
-
-function startRecognition(){
- if(!handsFree || processing || speakingNow || recognition) return;
-
- const SpeechRecognition =
-  window.SpeechRecognition || window.webkitSpeechRecognition;
-
- if(!SpeechRecognition){
-  handsFree = false;
-  updateHandsfreeButton();
-  status("VOICE RECOGNITION NOT SUPPORTED");
-  voiceStatus.textContent = "UNAVAILABLE";
-  addMessage("SYSTEM","This browser does not provide speech recognition. Please use the text chat.","system");
-  return;
- }
-
- const current = new SpeechRecognition();
- recognition = current;
-
- current.lang = "en-GB";
- current.continuous = false;
- current.interimResults = false;
- current.maxAlternatives = 1;
-
- current.onstart = ()=>{
-  if(recognition !== current) return;
-  voiceStatus.textContent = "LISTENING";
-  status(conversationActive ? "LISTENING FOR YOUR COMMAND" : "SAY HEY JARVIS");
- };
-
- current.onresult = event=>{
-  if(recognition !== current) return;
-  const transcript = event.results[0][0].transcript;
-  handleTranscript(transcript);
- };
-
- current.onerror = event=>{
-  if(recognition !== current) return;
-
-  voiceStatus.textContent = "VOICE ERROR";
-
-  if(event.error === "not-allowed" ||
-     event.error === "service-not-allowed"){
-   handsFree = false;
-   conversationActive = false;
-   updateHandsfreeButton();
-   status("MICROPHONE PERMISSION REQUIRED");
-   addMessage("SYSTEM","Please allow microphone access in your browser settings, then try again.","system");
-  }else if(event.error === "audio-capture"){
-   addMessage("SYSTEM","No microphone was detected.","system");
-  }else if(event.error === "network"){
-   addMessage("SYSTEM","Speech recognition reported a network error.","system");
-  }
- };
-
- current.onend = ()=>{
-  if(recognition === current) recognition = null;
-  if(handsFree && !processing && !speakingNow){
-   voiceStatus.textContent = "RESTARTING";
-   scheduleListening(900);
-  }
- };
-
- try{
-  current.start();
- }catch(error){
-  if(recognition === current) recognition = null;
-  scheduleListening(1800);
- }
-}
-
-function updateHandsfreeButton(){
+/* UPDATE BUTTONS */
+function updateButtons(){
  handsfreeButton.textContent =
   handsFree ? "HANDS-FREE: ON" : "HANDS-FREE: OFF";
+
  handsfreeButton.classList.toggle("active",handsFree);
+
+ muteButton.textContent =
+  muted ? "VOICE: OFF" : "VOICE: ON";
+
+ muteButton.classList.toggle("danger",muted);
 }
 
+/* HANDS-FREE BUTTON */
 handsfreeButton.addEventListener("click",()=>{
+ unlockSpeech();
+
  if(handsFree){
   handsFree = false;
   conversationActive = false;
-  stopRecognition();
-  updateHandsfreeButton();
-  status("HANDS-FREE DISABLED");
+
+  stopListening();
+  updateButtons();
+
+  setStatus("HANDS-FREE DISABLED");
   return;
  }
 
  handsFree = true;
  conversationActive = false;
- updateHandsfreeButton();
- status("STARTING MICROPHONE...");
- addMessage("SYSTEM","Hands-free activated. Say Hey JARVIS.","system");
 
- // Start directly from the user's tap.
- startRecognition();
+ updateButtons();
+
+ addMessage(
+  "SYSTEM",
+  "Hands-free activated. Say Hey JARVIS.",
+  "system"
+ );
+
+ setStatus("STARTING MICROPHONE...");
+ startListening();
 });
 
+/* TEST VOICE BUTTON */
+testVoiceButton.addEventListener("click",()=>{
+ muted = false;
+ updateButtons();
+
+ unlockSpeech();
+
+ if(!window.speechSynthesis){
+  setStatus("SPEECH ENGINE UNAVAILABLE");
+  voiceDisplay.textContent = "UNAVAILABLE";
+  return;
+ }
+
+ const synth = window.speechSynthesis;
+ synth.cancel();
+
+ const test = new SpeechSynthesisUtterance(
+  "Good evening. JARVIS voice systems are online. How may I assist you?"
+ );
+
+ test.lang = "en-GB";
+ test.rate = 0.91;
+ test.pitch = 0.88;
+ test.volume = 1;
+
+ const voice = getBritishVoice();
+ if(voice) test.voice = voice;
+
+ test.onstart = ()=>{
+  voiceDisplay.textContent = "SPEAKING";
+  setStatus("VOICE TEST IN PROGRESS");
+ };
+
+ test.onend = ()=>{
+  voiceDisplay.textContent = "READY";
+  setStatus("SYSTEM ONLINE");
+ };
+
+ test.onerror = event=>{
+  console.log("Voice test error:",event.error);
+  voiceDisplay.textContent = "ERROR";
+  setStatus("VOICE TEST FAILED");
+ };
+
+ try{
+  synth.resume();
+  synth.speak(test);
+ }catch(error){
+  voiceDisplay.textContent = "ERROR";
+  setStatus("VOICE ERROR");
+ }
+});
+
+/* MUTE BUTTON */
 muteButton.addEventListener("click",()=>{
  muted = !muted;
- muteButton.textContent = muted ? "VOICE: OFF" : "VOICE: ON";
- muteButton.classList.toggle("danger",muted);
 
- if(muted && "speechSynthesis" in window){
+ if(muted && window.speechSynthesis){
   window.speechSynthesis.cancel();
-  speakingNow = false;
+  speaking = false;
  }
+
+ updateButtons();
 
  if(handsFree && !processing){
   scheduleListening(700);
  }
 });
 
+/* SEND BUTTON */
 document.getElementById("send").addEventListener("click",()=>{
+ unlockSpeech();
  sendMessage(input.value);
 });
 
+/* ENTER TO SEND */
 input.addEventListener("keydown",event=>{
- if(event.key === "Enter") sendMessage(input.value);
+ if(event.key === "Enter"){
+  unlockSpeech();
+  sendMessage(input.value);
+ }
 });
 
-if("speechSynthesis" in window){
+/* CLEAR CHAT */
+document.getElementById("clearChat").addEventListener("click",()=>{
+ chat.innerHTML = "";
+
+ addMessage(
+  "JARVIS",
+  "Conversation cleared. I am ready for your next instruction.",
+  "jarvis"
+ );
+});
+
+/* LOAD AVAILABLE VOICES */
+if(window.speechSynthesis){
  window.speechSynthesis.getVoices();
+
+ window.speechSynthesis.onvoiceschanged = ()=>{
+  window.speechSynthesis.getVoices();
+ };
 }
 
-status("SYSTEM ONLINE");
+updateButtons();
+setStatus("SYSTEM ONLINE");
 </script>
+
 </body>
 </html>
