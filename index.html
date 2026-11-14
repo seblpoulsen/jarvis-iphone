@@ -3,547 +3,1111 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#050b12">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="JARVIS">
-<title>J.A.R.V.I.S.</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#030b13">
+<title>J.A.R.V.I.S. | Stark Industries</title>
+
 <style>
 :root {
-  color-scheme: dark;
-  --cyan: #55dfff;
-  --bg: #050b12;
-  --panel: #0a1722;
-  --line: #17435a;
-  --muted: #8ca9b8;
+ --cyan:#63eaff;
+ --blue:#087da9;
+ --bg:#020912;
+ --panel:rgba(5,22,34,.92);
+ --line:rgba(73,208,242,.32);
+ --text:#c9f6ff;
+ --muted:#6b9eae;
 }
-* { box-sizing: border-box; }
+
+* {box-sizing:border-box}
+
 body {
-  margin: 0;
-  background: radial-gradient(ellipse at 50% -20%,#12354a 0,#07121d 42%,#03070c 100%);
-  color: #dff8ff;
-  font-family: Arial, Helvetica, sans-serif;
-  min-height: 100vh;
+ margin:0;
+ min-height:100vh;
+ background:
+ radial-gradient(ellipse at center,#10334b 0%,#061522 48%,#02070d 100%);
+ color:var(--text);
+ font:14px "Segoe UI",Arial,sans-serif;
 }
+
+header {
+ min-height:65px;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ padding:12px 3%;
+ border-bottom:1px solid var(--line);
+ background:#03101beF;
+ letter-spacing:2px;
+ position:sticky;
+ top:0;
+ z-index:5;
+}
+
+.brand {color:var(--cyan);font-size:17px}
+.status {font-size:11px;color:#7fe7b4}
+
 main {
-  max-width: 850px;
-  margin: auto;
-  padding: calc(18px + env(safe-area-inset-top)) 16px calc(24px + env(safe-area-inset-bottom));
+ display:grid;
+ grid-template-columns:1fr minmax(300px,1.1fr) 1fr;
+ gap:16px;
+ padding:18px;
+ max-width:1800px;
+ margin:auto;
 }
-header { text-align: center; padding: 14px 0 18px; }
-.brand {
-  font-size: clamp(30px,8vw,48px);
-  letter-spacing: .23em;
-  color: var(--cyan);
-  text-shadow: 0 0 18px #1686b5;
-  font-weight: 300;
-}
-.sub {
-  font-size: 11px;
-  letter-spacing: .32em;
-  color: #8bb6c9;
-  margin-top: 8px;
-}
-.status {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 9px;
-  color: #9ed7e8;
-  font-size: 12px;
-  letter-spacing: .12em;
-  margin: 16px 0;
-}
-.dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #39d9a5;
-  box-shadow: 0 0 12px #39d9a5;
-}
-.core {
-  height: 154px;
-  width: 154px;
-  margin: 12px auto 20px;
-  border: 1px solid #247fa1;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  position: relative;
-  box-shadow: 0 0 30px #087eaa44,inset 0 0 30px #087eaa22;
-}
-.core:before,.core:after {
-  content: "";
-  position: absolute;
-  border: 1px solid #2ca6ce66;
-  border-radius: 50%;
-  inset: 10px;
-}
-.core:after { inset: 22px; border-color: #2ca6ce99; }
-.arc { font-size: 48px; color: var(--cyan); text-shadow: 0 0 20px var(--cyan); }
+
 .panel {
-  background: linear-gradient(145deg,#0b1c29ef,#07111b);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 15px;
-  margin: 12px 0;
-  box-shadow: 0 8px 28px #0005;
+ border:1px solid var(--line);
+ background:var(--panel);
+ box-shadow:0 0 25px #0a8cbd12;
+ padding:17px;
+ border-radius:3px;
+ min-width:0;
 }
-.panel h2 {
-  font-size: 12px;
-  letter-spacing: .2em;
-  color: var(--cyan);
-  margin: 0 0 12px;
+
+h2 {
+ font-size:11px;
+ letter-spacing:3px;
+ color:var(--cyan);
+ font-weight:500;
 }
-#log {
-  height: 240px;
-  overflow: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 11px;
-  padding: 2px;
+
+.sub {
+ font-size:10px;
+ color:var(--muted);
+ letter-spacing:2px;
+ margin-top:8px;
 }
-.msg {
-  padding: 10px 12px;
-  border-radius: 10px;
-  line-height: 1.45;
-  font-size: 14px;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
+
+.list {
+ display:flex;
+ justify-content:space-between;
+ border-bottom:1px solid #164052;
+ padding:11px 0;
+ color:#8db9c8;
+ font-size:11px;
+ gap:8px;
 }
-.jarvis { background: #0c2938; border-left: 2px solid var(--cyan); margin-right: 12px; }
-.user { background: #172331; border-right: 2px solid #4b8eae; margin-left: 12px; }
-.who {
-  display: block;
-  color: #7dcde5;
-  font-size: 10px;
-  letter-spacing: .14em;
-  margin-bottom: 5px;
+
+.list strong {
+ color:#d5faff;
+ font-weight:400;
+ text-align:right;
+ overflow-wrap:anywhere;
 }
-.controls { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+
+.gauge {margin:15px 0}
+
+.gauge-head {
+ display:flex;
+ justify-content:space-between;
+ font-size:11px;
+ color:#9dcbd8;
+}
+
+.meter {
+ height:5px;
+ background:#123044;
+ margin-top:8px;
+}
+
+.meter i {
+ display:block;
+ height:100%;
+ width:0;
+ background:linear-gradient(90deg,#126d9d,var(--cyan));
+ box-shadow:0 0 10px var(--cyan);
+ transition:width .4s;
+}
+
+.center {
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ justify-content:center;
+ text-align:center;
+}
+
+.orb {
+ width:min(30vw,280px);
+ aspect-ratio:1;
+ border-radius:50%;
+ position:relative;
+ display:grid;
+ place-items:center;
+ margin:28px auto;
+}
+
+.orb:before,.orb:after {
+ content:"";
+ position:absolute;
+ inset:0;
+ border-radius:50%;
+ border:1px solid #4bdcf4a0;
+ box-shadow:0 0 22px #1eb9e955;
+}
+
+.orb:before {
+ inset:7%;
+ border-style:dashed;
+ animation:spin 35s linear infinite;
+}
+
+.orb:after {
+ inset:17%;
+ animation:spin 22s linear infinite reverse;
+}
+
+.core {
+ width:37%;
+ aspect-ratio:1;
+ border-radius:50%;
+ background:radial-gradient(circle,#e8ffff,#5ce8ff 15%,#1179a9 40%,#05243a 70%);
+ box-shadow:0 0 28px #4bdcf4,0 0 80px #148bc477;
+ animation:pulse 3s ease-in-out infinite;
+}
+
+@keyframes spin {to{transform:rotate(360deg)}}
+@keyframes pulse {50%{filter:brightness(1.5);transform:scale(1.07)}}
+
+body.listening .core {
+ box-shadow:0 0 40px #54f5ff,0 0 110px #148bc4;
+}
+
+body.thinking .core {animation:pulse .7s infinite}
+body.speaking .core {animation:pulse 1s infinite}
+
+h1 {
+ font-size:25px;
+ font-weight:200;
+ letter-spacing:8px;
+}
+
+.controls {
+ display:flex;
+ gap:8px;
+ justify-content:center;
+ flex-wrap:wrap;
+}
+
 button {
-  border: 1px solid #247b9d;
-  background: linear-gradient(180deg,#103348,#091b28);
-  color: #c9f5ff;
-  border-radius: 10px;
-  padding: 14px 10px;
-  font-weight: 700;
-  letter-spacing: .08em;
-  font-size: 12px;
-  min-height: 48px;
+ background:#06283a;
+ border:1px solid #39bcd9;
+ color:#bff7ff;
+ padding:11px 15px;
+ letter-spacing:1px;
+ cursor:pointer;
+ border-radius:2px;
 }
-button:active { transform: scale(.985); background: #15506b; }
-button.primary { border-color: #48c9ee; background: linear-gradient(180deg,#126184,#0a344a); }
-button.active { border-color: #3de2ad; color: #9fffe0; box-shadow: 0 0 14px #25d99a33; }
-.entry { display: flex; gap: 8px; }
-input {
-  min-width: 0;
-  flex: 1;
-  background: #06111a;
-  border: 1px solid #20516a;
-  border-radius: 9px;
-  color: #e4fbff;
-  padding: 13px;
-  font-size: 16px;
-  outline: none;
+
+button:hover,button.active {
+ background:#0d4961;
+ box-shadow:0 0 14px #28c9ee55;
 }
-input:focus { border-color: var(--cyan); }
-.hint { font-size: 11px; color: var(--muted); line-height: 1.5; margin: 10px 2px 0; }
-footer { text-align: center; color: #567789; font-size: 10px; letter-spacing: .16em; padding: 14px; }
-@media(min-width:650px) {
-  .controls { grid-template-columns: repeat(4,1fr); }
-  #log { height: 300px; }
+
+button:disabled {opacity:.5;cursor:not-allowed}
+
+input,select,textarea {
+ background:#03131f;
+ border:1px solid #236078;
+ color:#e1fbff;
+ padding:11px;
+ min-width:0;
+ border-radius:2px;
 }
+
+select {width:100%}
+
+.chat {
+ display:flex;
+ flex-direction:column;
+ min-height:470px;
+}
+
+.log {
+ flex:1;
+ overflow-y:auto;
+ font-size:12px;
+ line-height:1.65;
+ color:#a8d5df;
+ max-height:55vh;
+ min-height:220px;
+}
+
+.msg {
+ padding:10px 0;
+ border-bottom:1px solid #123344;
+ overflow-wrap:anywhere;
+ white-space:pre-wrap;
+}
+
+.msg b {color:var(--cyan);font-weight:500}
+
+.entry {display:flex;gap:6px;margin-top:12px}
+.entry input {flex:1;width:100%}
+
+.settings {
+ margin-top:18px;
+ border-top:1px solid var(--line);
+ padding-top:10px;
+}
+
+.setting {
+ margin:12px 0;
+}
+
+.setting label {
+ display:block;
+ color:#8db9c8;
+ font-size:10px;
+ letter-spacing:1px;
+ margin-bottom:7px;
+}
+
+.setting input[type=range] {width:100%;padding:0}
+
+.tools {
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:8px;
+ margin-top:12px;
+}
+
+.small {font-size:10px;color:var(--muted);line-height:1.6}
+
+footer {
+ border-top:1px solid var(--line);
+ display:flex;
+ justify-content:space-between;
+ padding:14px 3%;
+ color:#5c91a2;
+ font-size:10px;
+ letter-spacing:2px;
+ gap:10px;
+ flex-wrap:wrap;
+}
+
+@media(max-width:1000px) {
+ main {grid-template-columns:1fr}
+ .orb {width:210px}
+ .chat {min-height:400px}
+ .log {max-height:450px}
+}
+
+@media(max-width:600px) {
+ header {padding:12px;font-size:10px}
+ .brand {font-size:13px}
+ main {padding:10px;gap:10px}
+ .panel {padding:14px}
+ .orb {width:190px}
+ h1 {font-size:22px}
+ button {padding:12px 10px;font-size:10px}
+ footer {font-size:9px}
+}
+
 </style>
 </head>
+
 <body>
-<main>
+
 <header>
-  <div class="brand">J.A.R.V.I.S.</div>
-  <div class="sub">JUST A RATHER VERY INTELLIGENT SYSTEM</div>
+ <div class="brand">STARK <b>INDUSTRIES</b> // J.A.R.V.I.S.</div>
+ <div class="status" id="status">● INITIALISING</div>
 </header>
 
-<div class="status">
-  <span class="dot" id="dot"></span>
-  <span id="status">SYSTEM ONLINE</span>
+<main>
+
+<!-- SYSTEM TELEMETRY -->
+
+<section class="panel">
+
+<h2>LIVE SYSTEM TELEMETRY</h2>
+
+<div class="gauge">
+ <div class="gauge-head">
+  <span>CPU LOAD</span>
+  <strong id="cpuText">--</strong>
+ </div>
+ <div class="meter"><i id="cpuBar"></i></div>
 </div>
 
-<div class="core"><div class="arc">✦</div></div>
+<div class="gauge">
+ <div class="gauge-head">
+  <span>RAM USAGE</span>
+  <strong id="ramText">--</strong>
+ </div>
+ <div class="meter"><i id="ramBar"></i></div>
+</div>
 
-<section class="panel">
-  <h2>COMMUNICATION LOG</h2>
-  <div id="log" aria-live="polite">
-    <div class="msg jarvis">
-      <span class="who">JARVIS</span>
-      Good day. JARVIS systems are online. How may I assist you?
-    </div>
-  </div>
+<div class="gauge">
+ <div class="gauge-head">
+  <span>GPU LOAD</span>
+  <strong id="gpuText">Unavailable</strong>
+ </div>
+ <div class="meter"><i id="gpuBar"></i></div>
+</div>
+
+<div class="list"><span>MEMORY</span><strong id="ramDetail">--</strong></div>
+<div class="list"><span>NETWORK RX / TX</span><strong id="netDetail">--</strong></div>
+<div class="list"><span>COMPUTER</span><strong id="pcName">--</strong></div>
+<div class="list"><span>UPTIME</span><strong id="uptime">--</strong></div>
+<div class="list"><span>BATTERY</span><strong id="battery">--</strong></div>
+<div class="list"><span>LOCAL TIME</span><strong id="clock">--</strong></div>
+<div class="list"><span>DATE</span><strong id="date">--</strong></div>
+<div class="list"><span>LOCAL SERVICE</span><strong id="localState">CHECKING</strong></div>
+<div class="list"><span>AI CONNECTION</span><strong id="apiState">STANDBY</strong></div>
+
+<div class="sub" id="telemetryStatus">WAITING FOR LOCAL TELEMETRY</div>
+
+<button id="refresh" style="width:100%;margin-top:15px">
+ REFRESH SYSTEM
+</button>
+
 </section>
 
-<section class="panel">
-  <h2>VOICE &amp; SYSTEM CONTROLS</h2>
-  <div class="controls">
-    <button class="primary" id="handsBtn">HANDS-FREE: OFF</button>
-    <button id="voiceBtn" class="active">VOICE: ON</button>
-    <button id="testBtn">TEST VOICE</button>
-    <button id="clearBtn">CLEAR LOG</button>
-  </div>
-  <p class="hint" id="voiceInfo">
-    British English · rate 0.94 · pitch 0.92 · Windows voice preference.
-  </p>
+<!-- CENTRAL AI -->
+
+<section class="panel center">
+
+<div class="sub">TONY STARK PERSONAL INTELLIGENCE</div>
+
+<div class="orb">
+ <div class="core"></div>
+</div>
+
+<h1>J.A.R.V.I.S.</h1>
+
+<div class="sub" id="voiceState">AWAITING INSTRUCTIONS</div>
+
+<div class="controls" style="margin-top:18px">
+ <button id="listen">HANDS-FREE: OFF</button>
+ <button id="mute">VOICE: ON</button>
+ <button id="stopSpeech">STOP SPEAKING</button>
+</div>
+
+<div class="settings">
+
+<h2>VOICE CONFIGURATION</h2>
+
+<div class="setting">
+ <label>BRITISH ENGLISH VOICE</label>
+ <select id="voiceSelect"></select>
+</div>
+
+<div class="setting">
+ <label>VOLUME</label>
+ <input id="volume" type="range" min="0" max="1" step=".05" value=".9">
+</div>
+
+<div class="setting">
+ <label>SPEECH RATE</label>
+ <input id="rate" type="range" min=".7" max="1.3" step=".05" value=".94">
+</div>
+
+<div class="setting">
+ <label>PITCH</label>
+ <input id="pitch" type="range" min=".7" max="1.3" step=".05" value=".92">
+</div>
+
+<button id="testVoice" style="width:100%">
+ TEST JARVIS VOICE
+</button>
+
+</div>
+
+<div class="sub" style="margin-top:20px">
+ SAY "HEY JARVIS" TO BEGIN
+</div>
+
+<div class="small" id="micStatus">
+ Microphone not activated
+</div>
+
 </section>
 
-<section class="panel">
-  <h2>DIRECT COMMUNICATION</h2>
-  <div class="entry">
-    <input id="message" type="text" placeholder="Speak or type a message…" autocomplete="off">
-    <button class="primary" id="sendBtn">SEND</button>
-  </div>
-  <p class="hint">
-    Hands-free requires this page to remain open. iPhone Safari cannot continuously listen for a wake word while locked or in the background.
-  </p>
+<!-- COMMUNICATIONS -->
+
+<section class="panel chat">
+
+<h2>JARVIS COMMUNICATIONS</h2>
+
+<div class="log" id="log">
+ <div class="msg">
+  <b>J.A.R.V.I.S.</b>
+  <div>Good evening. All systems are standing by. How may I assist?</div>
+ </div>
+</div>
+
+<div class="entry">
+ <input id="prompt" placeholder="Enter a command..." autocomplete="off">
+ <button id="send">SEND</button>
+</div>
+
+<div class="settings">
+
+<h2>PERSONAL SYSTEM</h2>
+
+<div class="tools">
+ <button id="memorySearch">SEARCH MEMORY</button>
+ <button id="memorySave">SAVE MEMORY</button>
+ <button id="fileSearch">SEARCH FILES</button>
+ <button id="localCheck">CHECK PC SERVICE</button>
+</div>
+
+<p class="small">
+ Personal memory and file intelligence require the Windows local service.
+ Your files remain on your PC unless you explicitly submit selected content.
+</p>
+
+</div>
+
 </section>
 
-<footer>STARK INDUSTRIES · JARVIS INTERFACE</footer>
 </main>
 
+<footer>
+ <span>STARK SYSTEMS // JARVIS PERSONAL AI</span>
+ <span>WINDOWS + IPHONE INTERFACE</span>
+ <span id="footerStatus">SYSTEM INITIALISING</span>
+</footer>
+
 <script>
-(() => {
 "use strict";
 
-const API_URL = "https://jarvis-ai.seblpoulsen.workers.dev/";
+/* CONFIGURATION */
+
+const API = "https://jarvis-ai.seblpoulsen.workers.dev/";
+
+const LOCAL = "http://127.0.0.1:8787";
+
 const $ = id => document.getElementById(id);
 
-const log = $("log");
-const statusEl = $("status");
-const dot = $("dot");
-
-let voiceEnabled = true;
+let muted = false;
 let handsFree = false;
-let waitingForWake = true;
+let conversationActive = false;
 let recognition = null;
-let speaking = false;
+let processing = false;
+let speakingNow = false;
+let restartTimer = null;
+let sessionNumber = 0;
 let voices = [];
+let currentAbort = null;
 
-function setStatus(text, good = true) {
-  statusEl.textContent = text;
-  dot.style.background = good ? "#39d9a5" : "#ffb45e";
-  dot.style.boxShadow = good ? "0 0 12px #39d9a5" : "0 0 12px #ffb45e";
+/* COMMUNICATION */
+
+function add(who,message) {
+ const el = document.createElement("div");
+ el.className = "msg";
+
+ const name = document.createElement("b");
+ name.textContent = who;
+
+ const content = document.createElement("div");
+ content.textContent = message;
+
+ el.append(name,content);
+ $("log").append(el);
+ $("log").scrollTop = $("log").scrollHeight;
 }
 
-function addMessage(role, message) {
-  const item = document.createElement("div");
-  item.className = "msg " + (role === "YOU" ? "user" : "jarvis");
-
-  const who = document.createElement("span");
-  who.className = "who";
-  who.textContent = role;
-
-  const body = document.createElement("span");
-  body.textContent = message;
-
-  item.append(who, body);
-  log.appendChild(item);
-  log.scrollTop = log.scrollHeight;
+function state(message) {
+ $("voiceState").textContent = message;
 }
 
-function loadVoices() {
-  if (!("speechSynthesis" in window)) return [];
-  voices = window.speechSynthesis.getVoices() || [];
-  return voices;
+function updateStatus(message) {
+ $("status").textContent = "● " + message;
 }
 
-if ("speechSynthesis" in window) {
-  loadVoices();
-  window.speechSynthesis.onvoiceschanged = loadVoices;
-}
+/* CLOCK */
 
-function chooseBritishVoice() {
-  const available = loadVoices();
+function tick() {
+ const d = new Date();
 
-  return available.find(v =>
-    /^en-GB/i.test(v.lang) &&
-    /George|Ryan|Daniel|UK/i.test(v.name)
-  ) ||
-  available.find(v => /^en-GB/i.test(v.lang)) ||
-  available.find(v => /^en[-_]/i.test(v.lang)) ||
-  null;
-}
+ $("clock").textContent =
+  d.toLocaleTimeString("en-GB");
 
-/* MATCHES THE WINDOWS DESKTOP VOICE SETTINGS */
-function speak(message) {
-  return new Promise(resolve => {
-    if (!voiceEnabled || !("speechSynthesis" in window)) {
-      resolve();
-      return;
-    }
-
-    const synth = window.speechSynthesis;
-    speaking = true;
-    synth.cancel();
-
-    const utterance = new SpeechSynthesisUtterance(message);
-
-    utterance.lang = "en-GB";
-    utterance.rate = 0.94;
-    utterance.pitch = 0.92;
-
-    const selectedVoice = chooseBritishVoice();
-    if (selectedVoice) utterance.voice = selectedVoice;
-
-    let finished = false;
-
-    function finish() {
-      if (finished) return;
-      finished = true;
-      speaking = false;
-      resolve();
-
-      if (handsFree) restartRecognition(700);
-    }
-
-    utterance.onend = finish;
-    utterance.onerror = finish;
-
-    synth.speak(utterance);
-
-    window.setTimeout(
-      finish,
-      Math.max(10000, message.length * 120)
-    );
+ $("date").textContent =
+  d.toLocaleDateString("en-GB",{
+   weekday:"long",
+   day:"2-digit",
+   month:"long",
+   year:"numeric"
   });
 }
 
-async function sendMessage(raw) {
-  const message = String(raw || "").trim();
-  if (!message) return;
+tick();
+setInterval(tick,1000);
 
-  $("message").value = "";
-  addMessage("YOU", message);
-  setStatus("JARVIS PROCESSING");
+/* VOICES */
 
-  try {
-    const response = await fetch(API_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message })
-    });
+function loadVoices() {
+ if (!("speechSynthesis" in window)) return;
 
-    if (!response.ok) {
-      throw new Error("Server returned " + response.status);
-    }
+ voices = speechSynthesis.getVoices();
 
-    const data = await response.json();
-    const reply =
-      data.reply ||
-      data.response ||
-      data.message ||
-      "I received your message, but no reply was returned.";
+ const select = $("voiceSelect");
+ select.innerHTML = "";
 
-    addMessage("JARVIS", reply);
+ const british = voices.filter(v =>
+  /^en-GB/i.test(v.lang)
+ );
 
-    setStatus(
-      handsFree
-        ? (waitingForWake ? "LISTENING FOR HEY JARVIS" : "READY FOR FOLLOW-UP")
-        : "SYSTEM ONLINE"
-    );
+ const available = british.length ? british : voices;
 
-    await speak(reply);
+ available.forEach((voice,index) => {
+  const option = document.createElement("option");
+  option.value = voices.indexOf(voice);
+  option.textContent = voice.name + " (" + voice.lang + ")";
+  select.append(option);
+ });
 
-    if (handsFree && !speaking) {
-      restartRecognition(500);
-    }
+ const preferred = available.find(v =>
+  /George|Ryan|Daniel/i.test(v.name)
+ );
 
-  } catch (error) {
-    addMessage(
-      "JARVIS",
-      "I could not reach my AI service. Please check your internet connection and try again."
-    );
-    setStatus("CONNECTION ERROR", false);
-
-    if (handsFree) restartRecognition(1200);
-  }
+ if (preferred) {
+  select.value = voices.indexOf(preferred);
+ }
 }
 
-function setupRecognition() {
-  const SpeechRecognition =
-    window.SpeechRecognition ||
-    window.webkitSpeechRecognition;
-
-  if (!SpeechRecognition) return false;
-
-  recognition = new SpeechRecognition();
-  recognition.lang = "en-GB";
-  recognition.continuous = true;
-  recognition.interimResults = false;
-  recognition.maxAlternatives = 1;
-
-  recognition.onresult = event => {
-    for (let i = event.resultIndex; i < event.results.length; i++) {
-      if (!event.results[i].isFinal) continue;
-
-      const heard = event.results[i][0].transcript.trim();
-      if (!heard) continue;
-
-      if (waitingForWake) {
-        const lower = heard.toLowerCase();
-        const wakeIndex = lower.indexOf("hey jarvis");
-
-        if (wakeIndex !== -1) {
-          waitingForWake = false;
-
-          const remainder = heard
-            .slice(wakeIndex + "hey jarvis".length)
-            .trim();
-
-          setStatus("JARVIS ACTIVATED");
-
-          if (remainder) {
-            sendMessage(remainder);
-          } else {
-            addMessage("JARVIS", "Yes?");
-            speak("Yes?");
-          }
-        }
-      } else {
-        sendMessage(heard);
-      }
-    }
-  };
-
-  recognition.onerror = event => {
-    if (
-      event.error === "not-allowed" ||
-      event.error === "service-not-allowed"
-    ) {
-      setStatus("MICROPHONE PERMISSION DENIED", false);
-      stopHandsFree();
-    }
-  };
-
-  recognition.onend = () => {
-    if (handsFree && !speaking) {
-      restartRecognition(700);
-    }
-  };
-
-  return true;
+if ("speechSynthesis" in window) {
+ loadVoices();
+ speechSynthesis.onvoiceschanged = loadVoices;
 }
 
-function restartRecognition(delay = 500) {
-  if (!handsFree || !recognition || speaking) return;
+/* SPEECH OUTPUT */
 
-  window.setTimeout(() => {
-    if (!handsFree || speaking) return;
-    try {
-      recognition.start();
-    } catch (_) {}
-  }, delay);
-}
+function speak(message) {
+ return new Promise(resolve => {
 
-function startHandsFree() {
-  if (!recognitionAvailable) {
-    setStatus("VOICE RECOGNITION NOT AVAILABLE", false);
-    addMessage(
-      "JARVIS",
-      "Speech recognition is unavailable in this browser. Please use the message box."
-    );
-    return;
+  if (muted || !("speechSynthesis" in window)) {
+   resolve();
+   return;
   }
 
-  handsFree = true;
-  waitingForWake = true;
+  speechSynthesis.cancel();
 
-  $("handsBtn").textContent = "HANDS-FREE: ON";
-  $("handsBtn").classList.add("active");
+  speakingNow = true;
+  document.body.classList.add("speaking");
+  state("SPEAKING");
 
-  setStatus("LISTENING FOR HEY JARVIS");
+  const utterance = new SpeechSynthesisUtterance(message);
 
-  try {
-    recognition.start();
-  } catch (_) {
-    restartRecognition(800);
+  utterance.lang = "en-GB";
+  utterance.volume = Number($("volume").value);
+  utterance.rate = Number($("rate").value);
+  utterance.pitch = Number($("pitch").value);
+
+  const selected = voices[Number($("voiceSelect").value)];
+
+  if (selected) utterance.voice = selected;
+
+  let finished = false;
+
+  function finish() {
+   if (finished) return;
+   finished = true;
+
+   speakingNow = false;
+   document.body.classList.remove("speaking");
+
+   resolve();
   }
+
+  utterance.onend = finish;
+  utterance.onerror = finish;
+
+  speechSynthesis.speak(utterance);
+
+  setTimeout(finish,Math.max(15000,message.length*150));
+ });
 }
 
-function stopHandsFree() {
+/* STOP MICROPHONE */
+
+function stopRecognition() {
+ clearTimeout(restartTimer);
+ sessionNumber++;
+
+ const old = recognition;
+ recognition = null;
+
+ if (old) {
+  old.onend = null;
+  try { old.abort(); } catch(e) {}
+ }
+
+ document.body.classList.remove("listening");
+ $("listen").classList.remove("active");
+}
+
+/* MICROPHONE RESTART */
+
+function scheduleListening(delay=900) {
+
+ clearTimeout(restartTimer);
+
+ if (!handsFree || processing || speakingNow) return;
+
+ const expected = sessionNumber;
+
+ restartTimer = setTimeout(() => {
+
+  if (
+   handsFree &&
+   !processing &&
+   !speakingNow &&
+   !recognition &&
+   expected === sessionNumber
+  ) {
+   startRecognition();
+  }
+
+ },delay);
+}
+
+/* VOICE RECOGNITION */
+
+function startRecognition() {
+
+ if (!handsFree || processing || speakingNow || recognition) return;
+
+ const SpeechRecognition =
+  window.SpeechRecognition ||
+  window.webkitSpeechRecognition;
+
+ if (!SpeechRecognition) {
+  add("SYSTEM","Speech recognition is not supported by this browser.");
   handsFree = false;
-  waitingForWake = true;
+  $("listen").textContent = "HANDS-FREE: OFF";
+  state("VOICE RECOGNITION UNAVAILABLE");
+  return;
+ }
 
-  $("handsBtn").textContent = "HANDS-FREE: OFF";
-  $("handsBtn").classList.remove("active");
+ const instance = new SpeechRecognition();
+ recognition = instance;
 
-  if (recognition) {
-    try { recognition.stop(); } catch (_) {}
+ instance.lang = "en-GB";
+ instance.continuous = false;
+ instance.interimResults = true;
+ instance.maxAlternatives = 1;
+
+ let finalTranscript = "";
+
+ instance.onstart = () => {
+  $("micStatus").textContent = "MICROPHONE ACTIVE";
+  $("listen").classList.add("active");
+  document.body.classList.add("listening");
+
+  state(conversationActive
+   ? "CONVERSATION ACTIVE"
+   : 'LISTENING FOR "HEY JARVIS"');
+ };
+
+ instance.onresult = event => {
+
+  let interim = "";
+
+  for (let i=event.resultIndex;i<event.results.length;i++) {
+   const result = event.results[i];
+
+   if (result.isFinal) {
+    finalTranscript += result[0].transcript;
+   } else {
+    interim += result[0].transcript;
+   }
   }
 
-  setStatus("SYSTEM ONLINE");
+  if (interim) {
+   $("micStatus").textContent = "HEARING: " + interim;
+  }
+
+  if (finalTranscript.trim()) {
+   const text = finalTranscript.trim();
+   finalTranscript = "";
+   handleTranscript(text);
+  }
+ };
+
+ instance.onerror = event => {
+
+  $("micStatus").textContent = "MICROPHONE: " + event.error;
+
+  if (
+   event.error === "not-allowed" ||
+   event.error === "service-not-allowed"
+  ) {
+   handsFree = false;
+   conversationActive = false;
+   stopRecognition();
+
+   $("listen").textContent = "HANDS-FREE: OFF";
+   state("MICROPHONE PERMISSION DENIED");
+
+   add("SYSTEM","Allow microphone access in your browser settings.");
+  }
+ };
+
+ instance.onend = () => {
+
+  if (recognition === instance) {
+   recognition = null;
+  }
+
+  document.body.classList.remove("listening");
+
+  if (handsFree && !processing && !speakingNow) {
+   scheduleListening(900);
+  }
+ };
+
+ try {
+  instance.start();
+ } catch(error) {
+  if (recognition === instance) recognition = null;
+
+  add("VOICE ERROR",error.message);
+  scheduleListening(1800);
+ }
 }
 
-$("handsBtn").addEventListener("click", () => {
-  handsFree ? stopHandsFree() : startHandsFree();
-});
+/* WAKE WORD */
 
-$("voiceBtn").addEventListener("click", () => {
-  voiceEnabled = !voiceEnabled;
+function handleTranscript(transcript) {
 
-  $("voiceBtn").textContent =
-    "VOICE: " + (voiceEnabled ? "ON" : "OFF");
+ transcript = transcript.trim();
 
-  $("voiceBtn").classList.toggle("active", voiceEnabled);
+ if (!transcript || processing) return;
 
-  if (!voiceEnabled && "speechSynthesis" in window) {
-    window.speechSynthesis.cancel();
-  }
-});
+ add("VOICE HEARD",transcript);
 
-$("testBtn").addEventListener("click", async () => {
-  if (!("speechSynthesis" in window)) {
-    addMessage("JARVIS", "Speech output is not supported by this browser.");
-    return;
-  }
+ if (!conversationActive) {
 
-  const voice = chooseBritishVoice();
-  const description = voice
-    ? voice.name + " (" + voice.lang + ")"
-    : "the iPhone default voice";
-
-  addMessage(
-    "JARVIS",
-    "Voice test. Selected voice: " + description
+  const match = transcript.match(
+   /\b(?:hey\s+)?jarvis\b[,.\s!]*(.*)$/i
   );
 
-  await speak(
-    "Good day. This is JARVIS. British English voice test. How may I assist you?"
-  );
-});
-
-$("sendBtn").addEventListener("click", () => {
-  sendMessage($("message").value);
-});
-
-$("message").addEventListener("keydown", event => {
-  if (event.key === "Enter") {
-    sendMessage($("message").value);
+  if (!match) {
+   state('WAITING FOR "HEY JARVIS"');
+   return;
   }
-});
 
-$("clearBtn").addEventListener("click", () => {
-  log.replaceChildren();
-  addMessage("JARVIS", "Communication log cleared. I am ready.");
-});
+  conversationActive = true;
 
-const recognitionAvailable = setupRecognition();
+  const command = (match[1] || "").trim();
 
-if (!recognitionAvailable) {
-  $("voiceInfo").textContent +=
-    " Speech recognition is not available in this browser.";
+  send(command || "Hello JARVIS.");
+
+ } else {
+
+  send(transcript);
+ }
 }
 
-window.setTimeout(loadVoices, 500);
+/* AI CONNECTION */
 
-})();
+async function send(message) {
+
+ message = (message || $("prompt").value).trim();
+
+ if (!message || processing) return;
+
+ processing = true;
+ stopRecognition();
+
+ $("prompt").value = "";
+
+ add("YOU",message);
+
+ $("apiState").textContent = "CONNECTING";
+ updateStatus("CONTACTING AI");
+ state("THINKING");
+
+ currentAbort = new AbortController();
+
+ try {
+
+  const response = await fetch(API,{
+   method:"POST",
+   headers:{
+    "Content-Type":"application/json"
+   },
+   body:JSON.stringify({
+    message:message
+   }),
+   signal:currentAbort.signal
+  });
+
+  if (!response.ok) {
+   throw new Error("AI server returned HTTP " + response.status);
+  }
+
+  const data = await response.json();
+
+  if (!data.reply || typeof data.reply !== "string") {
+   throw new Error(data.error || "Invalid AI response");
+  }
+
+  add("J.A.R.V.I.S.",data.reply);
+
+  $("apiState").textContent = "CONNECTED";
+  updateStatus("SYSTEM ONLINE");
+
+  await speak(data.reply);
+
+ } catch(error) {
+
+  if (error.name !== "AbortError") {
+   add("SYSTEM","Connection error: " + error.message);
+   $("apiState").textContent = "OFFLINE";
+   updateStatus("CONNECTION ERROR");
+  }
+
+ } finally {
+
+  currentAbort = null;
+  processing = false;
+
+  if (handsFree) {
+   state(conversationActive
+    ? "CONVERSATION ACTIVE"
+    : 'LISTENING FOR "HEY JARVIS"');
+
+   scheduleListening(1200);
+  } else {
+   state("AWAITING INSTRUCTIONS");
+  }
+ }
+}
+
+/* HANDS-FREE BUTTON */
+
+$("listen").onclick = async () => {
+
+ if (handsFree) {
+
+  handsFree = false;
+  conversationActive = false;
+
+  stopRecognition();
+
+  $("listen").textContent = "HANDS-FREE: OFF";
+  state("AWAITING INSTRUCTIONS");
+
+  add("SYSTEM","Hands-free disabled.");
+
+  return;
+ }
+
+ if (!navigator.mediaDevices && !window.webkitSpeechRecognition && !window.SpeechRecognition) {
+  add("SYSTEM","Your browser does not support speech recognition.");
+  return;
+ }
+
+ handsFree = true;
+ conversationActive = false;
+
+ $("listen").textContent = "HANDS-FREE: ON";
+
+ add("SYSTEM",'Hands-free activated. Say "Hey JARVIS".');
+
+ startRecognition();
+};
+
+/* MUTE */
+
+$("mute").onclick = () => {
+
+ muted = !muted;
+
+ $("mute").textContent = "VOICE: " + (muted ? "OFF" : "ON");
+
+ if (muted) {
+  speechSynthesis.cancel();
+  speakingNow = false;
+
+  if (handsFree && !processing) {
+   scheduleListening(300);
+  }
+ }
+};
+
+/* INTERRUPT */
+
+$("stopSpeech").onclick = () => {
+
+ if ("speechSynthesis" in window) {
+  speechSynthesis.cancel();
+ }
+
+ if (currentAbort) {
+  currentAbort.abort();
+ }
+
+ speakingNow = false;
+ processing = false;
+
+ state("INTERRUPTED");
+
+ if (handsFree) {
+  scheduleListening(500);
+ }
+};
+
+/* MANUAL INPUT */
+
+$("send").onclick = () => send();
+
+$("prompt").addEventListener("keydown",event => {
+ if (event.key === "Enter") send();
+});
+
+/* TEST VOICE */
+
+$("testVoice").onclick = async () => {
+ await speak(
+  "Good evening. I am JARVIS, your personal intelligent assistant. All systems are standing by."
+ );
+};
+
+/* LOCAL WINDOWS SERVICE */
+
+async function localRequest(path,options={}) {
+
+ const response = await fetch(LOCAL + path,{
+  ...options,
+  headers:{
+   "Content-Type":"application/json",
+   ...(options.headers || {})
+  },
+  cache:"no-store",
+  signal:AbortSignal.timeout(5000)
+ });
+
+ if (!response.ok) {
+  throw new Error("Local service HTTP " + response.status);
+ }
+
+ return response.json();
+}
+
+/* TELEMETRY */
+
+function gauge(name,value,label) {
+
+ $(name+"Text").textContent = label;
+
+ $(name+"Bar").style.width =
+  Math.max(0,Math.min(100,Number(value)||0))+"%";
+}
+
+async function telemetry() {
+
+ try {
+
+  const data = await localRequest("/api/system");
+
+  if (Number.isFinite(data.cpu)) {
+   gauge("cpu",data.cpu,data.cpu+"%");
+  }
+
+  if (Number.isFinite(data.ramPercent)) {
+   gauge("ram",data.ramPercent,data.ramPercent+"%");
+  }
+
+  if (Number.isFinite(data.gpuPercent)) {
+   gauge("gpu",data.gpuPercent,data.gpuPercent+"%");
+  } else {
+   $("gpuText").textContent = "Unavailable";
+  }
+
+  $("ramDetail").textContent =
+   data.ramUsedGB != null
+   ? data.ramUsedGB+" / "+data.ramTotalGB+" GB"
+   : "--";
+
+  $("netDetail").textContent =
+   data.rxMbps != null
+   ? data.rxMbps+" / "+data.txMbps+" Mbps"
+   : "--";
+
+  $("pcName").textContent = data.computerName || "--";
+
+  $("uptime").textContent = data.uptime || "--";
+
+  $("battery").textContent = data.battery || "--";
+
+  $("localState").textContent = "CONNECTED";
+
+  $("telemetryStatus").textContent =
+   "LIVE • UPDATED "+new Date().toLocaleTimeString("en-GB");
+
+  $("footerStatus").textContent = "WINDOWS SERVICE CONNECTED";
+
+ } catch(error) {
+
+  $("localState").textContent = "OFFLINE";
+
+  $("telemetryStatus").textContent =
+   "LOCAL SERVICE UNAVAILABLE • "+error.message;
+
+  $("footerStatus").textContent = "LOCAL PC DISCONNECTED";
+ }
+}
+
+$("refresh").onclick = telemetry;
+$("localCheck").onclick = telemetry;
+
+telemetry();
+setInterval(telemetry,4000);
+
+/* MEMORY AND FILE CONTROLS */
+
+/*
+ These controls are intentionally not connected to invented endpoints.
+ They will become active when the matching secure PowerShell
+ endpoints are implemented.
+*/
+
+$("memorySearch").onclick = () => {
+ add("SYSTEM",
+  "Local memory search requires the Windows memory API. The dashboard will not send your private memories to the AI automatically.");
+};
+
+$("memorySave").onclick = () => {
+ add("SYSTEM",
+  "Memory storage requires the Windows local memory service.");
+};
+
+$("fileSearch").onclick = () => {
+ add("SYSTEM",
+  "Local file intelligence requires the approved-folder indexing service.");
+};
+
+/* INITIAL CONNECTION */
+
+async function checkAI() {
+
+ try {
+
+  const response = await fetch(API,{
+   method:"POST",
+   headers:{"Content-Type":"application/json"},
+   body:JSON.stringify({
+    message:"Reply with a brief connection confirmation."
+   })
+  });
+
+  $("apiState").textContent =
+   response.ok ? "AVAILABLE" : "ERROR";
+
+ } catch(error) {
+
+  $("apiState").textContent = "UNREACHABLE";
+ }
+}
+
+$("footerStatus").textContent = "AI INITIALISING";
+
 </script>
 </body>
 </html>
